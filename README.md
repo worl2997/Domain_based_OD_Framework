@@ -7,9 +7,9 @@ This repository is for domain-specific object detection training framework based
 
 The purpose of this project is to implement a framework that automatically downloads and learns a dataset based on a user-specified class.
 
-## work in progress
+## Work in progress..
 - COCO dataset API will be updated 
-- Yolov4 model will be updated 
+- Yolov4 module will be updated 
 - pytorch -> onnx -> tensorRT based model transformation module will be updated 
 
 ### Environment 
