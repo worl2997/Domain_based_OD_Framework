@@ -21,7 +21,7 @@ def parse_model_config(path):
 def parse_data_config(path):
     # 커스텀 데이터의 경우 config/custom.data 파일을 읽어와 아래와 같이 파싱함
     '''
-    config/custom.data 파일 내용은 아래와 같다
+    config/custom.data 파일 내용
     classes= 1
     train=data/custom/train.txt
     valid=data/custom/valid.txt

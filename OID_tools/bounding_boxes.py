@@ -6,8 +6,6 @@ import os
 
 
 def bounding_boxes_images(args, root_dir, default_oid_dir):
-    """ This function should be called when args.command is 'all' or 'downloader' """
-
     if not args.Dataset:
         dataset_dir = default_oid_dir  # ../data/custom
         csv_dir = os.path.join(default_oid_dir, 'csv_folder')
@@ -65,6 +63,6 @@ def bounding_boxes_images(args, root_dir, default_oid_dir):
                     download(args, data_type, df_val, folder[i], dataset_dir, class_name, class_dict[class_name],
                              domain_name, domain_dict, args.n_threads)
 
-        make_config_file(root_dir, default_oid_dir, domain_dict)
+        make_data_file(root_dir, default_oid_dir, domain_dict)
 
     return domain_dict

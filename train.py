@@ -42,14 +42,17 @@ metrics = [
     "conf_noobj",
 ]
         
-def train(args, custom, train_path, valid_path, class_names, model_cfg, domain_name,model_save_path):
+def train(args, custom, train_path, valid_path, class_names, model_cfg, model_save_path):
     logger = Logger(args.logdir)  # 로거 생성하는 부분
     GPU_NUM = args.gpu_num
+    save_path = os.path.join(model_save_path,args.domain)
+    pth_file_name = args.domain + '_' + args.model
+
     device = torch.device(f'cuda:{GPU_NUM}' if torch.cuda.is_available() else 'cpu')
     torch.cuda.set_device(device)  # change allocation of current GPU
     # device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
-    os.makedirs(os.path.join(model_save_path,domain_name), exist_ok=True)
+    os.makedirs(os.path.join(model_save_path,args.domain), exist_ok=True)
     os.makedirs("output", exist_ok=True)
     # os.makedirs("checkpoints", exist_ok=True)
 
@@ -77,7 +80,7 @@ def train(args, custom, train_path, valid_path, class_names, model_cfg, domain_n
     optimizer = torch.optim.Adam(model.parameters())
 
 # 학습시키는 부분
-    print("=========================== "+domain_name+" model training... ==========================")
+    print("=========================== "+args.domain+" model training... ==========================")
     for epoch in range(args.epochs):
         model.train()
         start_time = time.time()
@@ -166,7 +169,8 @@ def train(args, custom, train_path, valid_path, class_names, model_cfg, domain_n
                 print( "---- mAP not measured (no detections found by model)")
 
         if epoch % args.checkpoint_interval == 0:
-            torch.save(model.state_dict(), os.path.join(os.path.join(model_save_path,domain_name),domain_name + f"_%d.pth" %epoch))
+
+            torch.save(model.state_dict(), os.path.join(save_path,pth_file_name + f"_%d.pth" %epoch))
 
 
 def evaluate(model, custom, path, iou_thres, conf_thres, nms_thres, img_size, batch_size):

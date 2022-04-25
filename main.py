@@ -16,18 +16,16 @@ if __name__ == '__main__':
     if args.command == 'downloader':
         domain_groups = bounding_boxes_images(args, ROOT_DIR, DEFAULT_DATA_DIR)
         print(domain_groups)
-    elif args.command == 'train':
 
-        data_files = os.path.join(DATA_FILE_DIR, args.domain + '.data') # 리스-> 그냥 파일 경로
+    elif args.command == 'train':
+        data_files = os.path.join(DATA_FILE_DIR, args.domain + '.data')
         data_config = parse_data_config(data_files)
-        print(str(data_config))
         train_path = data_config['train']
         valid_path = data_config["valid"]
         class_names = load_classes(data_config["names"])
-        if args.model_def:
-            model_cfg = args.model_def
+        if args.cfg:
+            model_cfg = args.cfg
         else:
-            model_cfg = get_group_cfg(cfg_path,'yolo', data_config['classes'])  #trained with yolov3 model in default
-        print('model_cfg_file:'+ str(model_cfg))
-        train(args, True, train_path, valid_path, class_names, model_cfg, args.domain,model_save_path)
+            model_cfg = get_group_cfg(cfg_path, args.domain, args.model, data_config['classes'])
+        train(args, True, train_path, valid_path, class_names, model_cfg, model_save_path)
 

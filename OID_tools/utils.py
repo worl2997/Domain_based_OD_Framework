@@ -26,12 +26,11 @@ def make_valid_txt(data_dir, domain_name):
     return os.path.join(path_, file_name)
 
 
-def make_config_file(root_dir, default_oid_dir, domain_dict):
+def make_data_file(root_dir, default_oid_dir, domain_dict):
     print('in make config, domain_dict:' + str(domain_dict))
 
     config_file_path = os.path.join(root_dir, 'config', 'custom_data')
 
-    # make sure config_file_path is valid
     if not os.path.isdir(config_file_path):
         os.makedirs(config_file_path)
 
@@ -73,24 +72,26 @@ def parse_custom_data(custom_path, group_name):
     return train_path, valid_path, name_path
 
 
-# 훈련시키려는 도메인의 클래스 개수에 따라 yolo-tiny, 혹은 yolov3의 cfg파일을 베이스로 새 model-cfg파일을 생성하고 경로반환함
-def get_group_cfg(path, type, class_num):
-    if type == "tiny":
-        custom_path = os.path.join(path, 'create_custom_tiny.sh')
-        cfg_name = 'tiny-' + str(class_num) + '.cfg'
+# 훈련시키려는 도메인의 클래스 개수에 따라 yolo-tiny,
+# 혹은 yolov3의 cfg파일을 베이스로 새 model-cfg파일을 생성하고 경로반환함
+
+def get_group_cfg(path, domain, model_type, class_num):
+    if model_type == "yolov3-tiny":
+        custom_path = os.path.join(path, 'create_custom_yolov3_tiny.sh')
+        cfg_name = domain +'_yolov3-tiny_' + str(class_num) + '.cfg'
         if cfg_name in os.listdir(path):
             return os.path.join(path, cfg_name)
         else:
-            os.system("bash %s %d" % (custom_path, int(class_num)))
+            os.system("bash %s %d %s %s" % (custom_path, int(class_num), model_type, domain))
             os.system("mv %s %s" % (cfg_name, path))
             return os.path.join(path, cfg_name)
-    elif type == "yolo":
-        custom_path = os.path.join(path, 'create_custom_model.sh')
-        cfg_name = 'yolov3-' + str(class_num) + '.cfg'
+    elif model_type == "yolov3":
+        custom_path = os.path.join(path, 'create_custom_yolov3.sh')
+        cfg_name =  domain +'_yolov3_' + str(class_num) + '.cfg'
         if cfg_name in os.listdir(path):
             return os.path.join(path, cfg_name)
         else:
-            os.system("bash %s %d" % (custom_path, int(class_num)))
+            os.system("bash %s %d %s %s" % (custom_path, int(class_num),model_type, domain ))
             os.system("mv %s %s" % (cfg_name, path))
             return os.path.join(path, cfg_name)
 
