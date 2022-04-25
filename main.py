@@ -2,7 +2,6 @@ from __future__ import division
 from parser import *
 from OID_tools.bounding_boxes import *
 from train import *
-from utils.utils import get_data_list
 import os
 import sys
 
@@ -18,43 +17,17 @@ if __name__ == '__main__':
         domain_groups = bounding_boxes_images(args, ROOT_DIR, DEFAULT_DATA_DIR)
         print(domain_groups)
     elif args.command == 'train':
-        domain_groups = get_domain_group(DEFAULT_DATA_DIR) #
-        # {'Park': [3, 'Person', 'Tree', 'Dog'], 'Highway': [2, 'Car', 'Bus']}
-        domain_names = []
-        for key in domain_groups:
-            domain_names.append(key)
 
-        data_files = get_data_list(DATA_FILE_DIR)
-
-        for key, data in data_files.items():
-            data_config = parse_data_config(data)
-            print(str(data_config))
-            train_path = data_config['train']
-            valid_path = data_config["valid"]
-            class_names = load_classes(data_config["names"])
-            if args.model_def:
-                model_cfg = args.model_def
-            else:
-                model_cfg = get_group_cfg(cfg_path,'yolo', data_config['classes']) # trained with yolov3 model in default
-            print('model_cfg_file:'+str(model_cfg))
-            train(args, True, train_path, valid_path, class_names, model_cfg, key,model_save_path)
-
-    elif args.command == 'all':
-        domain_groups = bounding_boxes_images(args,ROOT_DIR, DEFAULT_DATA_DIR)
-        domain_names = []
-        for key in domain_groups:
-            domain_names.append(key)
-        data_files = [os.path.join(DATA_FILE_DIR, x) for x in os.listdir(DATA_FILE_DIR)]
-
-        for index, data in enumerate(data_files):
-            data_config = parse_data_config(data)
-            train_path = data_config['train']
-            valid_path = data_config["valid"]
-            class_names = load_classes(data_config["names"])
-            if args.model_def:
-                model_cfg = args.model_def
-            else:
-                model_cfg = get_group_cfg(cfg_path, 'yolo', data_config['classes'])
-            train(args, True, train_path, valid_path, class_names, model_cfg, domain_names[index],model_save_path)
-
+        data_files = os.path.join(DATA_FILE_DIR, args.domain + '.data') # 리스-> 그냥 파일 경로
+        data_config = parse_data_config(data_files)
+        print(str(data_config))
+        train_path = data_config['train']
+        valid_path = data_config["valid"]
+        class_names = load_classes(data_config["names"])
+        if args.model_def:
+            model_cfg = args.model_def
+        else:
+            model_cfg = get_group_cfg(cfg_path,'yolo', data_config['classes'])  #trained with yolov3 model in default
+        print('model_cfg_file:'+ str(model_cfg))
+        train(args, True, train_path, valid_path, class_names, model_cfg, args.domain,model_save_path)
 
