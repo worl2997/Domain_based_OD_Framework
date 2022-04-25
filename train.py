@@ -9,9 +9,6 @@ from utils.transforms import *
 from utils.parse_config import *
 
 from terminaltables import AsciiTable
-
-import os
-import sys
 import time
 import datetime
 import argparse

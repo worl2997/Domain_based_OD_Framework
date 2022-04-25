@@ -30,9 +30,8 @@ def parse_arguments():
     parser.add_argument("--evaluation_interval", type=int, default=5, help="interval evaluations on validation set")
     parser.add_argument("--img_size", type=int, default=416, help="size of each image dimension")
     parser.add_argument("--logdir", type=str, default="logs", help="Defines the directory where the training log files are stored")
-
     parser.add_argument("--batch_size", type=int, default=8, help="size of each image batch")
-    # parser.add_argument("--gpu_num", type=int, default=0, help="select number of gpu") # multi-gpu training function will be implemented later
+    parser.add_argument("--gpu_num", type=int, default=0, help="select number of gpu") # multi-gpu training function will be implemented later
     # From below,  setting is not essential
     parser.add_argument('--Dataset', required=False,
                         metavar="/path/to/custom/csv/",
