@@ -39,7 +39,7 @@ For example, if you set domains.txt as below, then you can get Highway, Park dom
 ##  Parser setting and run 
 There are several parsers that need to be configured for downloading data, and training model 
 
-####[ For download dataset ]  
+#### [ For download dataset ]  
 command :   
 download - only download dataset   
 train - only train model   
@@ -79,7 +79,7 @@ Storing the logs on a slow drive possibly leads to a significant training speed 
 
 You can adjust the log directory using `--logdir <path>` when running `tensorboard` or the `train.py`.
 
-##Flowchart
+## Flowchart
 ![domain_list](readme/flowchart.PNG)  
 
 ① - 'bounding_boxes' class is data downloading class, it calls downloader.py  
@@ -89,7 +89,7 @@ You can adjust the log directory using `--logdir <path>` when running `tensorboa
 ③ - 'get_label' method parsing the csv file, and make label data about image. You can modify this code to get the label data for your purpose.  
 
 ④ - 'Make_domain_list' method  make name file, which contains class name  
-#####After ②③④, we can get the directory list as below  
+##### After ②③④, we can get the directory list as below  
 ![domain_list](readme/data_example.png)  
 and train.txt, valid.txt, highway.name files are made.  
 train.txt, valid.txt files contain the path of image datasets  
