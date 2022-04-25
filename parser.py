@@ -22,6 +22,8 @@ def parse_arguments():
                         help='No labels creations')
 
     parser.add_argument("--gpu_num", type=int, default=0, help="select number of gpu") # multi-gpu training function will be implemented later
+    parser.add_argument("--domain", type=str, default=None, help="domain name for train")
+
 
     parser.add_argument("--epochs", type=int, default=100, help="number of epochs")
     parser.add_argument("--batch_size", type=int, default=8, help="size of each image batch")

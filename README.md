@@ -7,8 +7,12 @@ This repository is for domain-specific object detection training framework based
 
 The purpose of this project is to implement a framework that automatically downloads and learns a dataset based on a user-specified class.
 
+## work in progress
+- COCO dataset API will be updated 
+- Yolov4 model will be updated 
+- pytorch -> onnx -> tensorRT based model transformation module will be updated 
 
-###Environment 
+### Environment 
 Ubuntu 18.04  
 CUDA Toolkit 10.0 with the 410 version of the NVidia Driver  
 Python 3.6  
@@ -54,12 +58,10 @@ model_def : only config if you want to train with your specific model.cfg file, 
 ![domain_list](readme/parser_for_trains.PNG)
 
 ####[ Run main.py  example ]  
-##### For download & train 
-    $ python main.py all --classes domains.txt --limit 10000 --n_threads 60 --batch_size 8 --epochs 100 --pretrained_weights weights/yolov3.weights
-##### For only download 
+##### For download domain data 
     $ python main.py downloader --classes domains.txt --limit 10000 --n_threads 60 
-##### For only training (if dataset is already prepared) 
-    $ python main.py train --batch_size 8 --epochs 200 
+##### For trian domain model  
+    $ python main.py train --domain Highway --batch_size 8 --epochs 200 
     
 
 
