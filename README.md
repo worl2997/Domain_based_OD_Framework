@@ -51,13 +51,13 @@ all - download the dataset, then train domain model
 
 ![domain_list](./readme/parser_for_downloading.PNG)
 
-####[ For training ]  
+#### [ For training ]  
 batch_size : set your training batch_size 
 model_def : only config if you want to train with your specific model.cfg file, if you don't set, then trained with 'yolov3.cfg'  
 (see 34 or 55 line in main.py)
 ![domain_list](readme/parser_for_trains.PNG)
 
-####[ Run main.py  example ]  
+#### [ Run main.py  example ]  
 ##### For download domain data 
     $ python main.py downloader --classes domains.txt --limit 10000 --n_threads 60 
 ##### For trian domain model  
@@ -164,7 +164,7 @@ parser setting for detect test is as below:
 --weights_path : put the trained model with your custom data ex: weights/custom_weight/Highway.pth  
 --class_path : name file path ex: data/custom/domain_list/Highway.name 
 
-#####Run detect.py example  
+##### Run detect.py example  
 
     $ python detect.py --image_folder data/sample --model_def config/custom_cfg/yolov3-custom.cfg --weights_path weights/custom_weight/Highway.pth --class_path data/custom/domain_list/Highway.name
 then, you can get the result in "output" directory (it made when detect.py run)
