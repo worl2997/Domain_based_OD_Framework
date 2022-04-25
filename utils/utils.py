@@ -18,6 +18,7 @@ def get_data_list(DATA_FILE_DIR):
     for data in file_list:
         file_name = data.split('/')
         data_dict[file_name[-1][:-5]] = data
+
     return data_dict
 
 def to_cpu(tensor):

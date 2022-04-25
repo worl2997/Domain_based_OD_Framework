@@ -56,6 +56,7 @@ def get_domain_group(DEFAULT_DATA_DIR):
     domain_dict = {}
     n_file = os.listdir(list_path)
     print(n_file)
+
     for i in n_file:
         fp = open(os.path.join(list_path, i), "r")
         names = fp.read().split("\n")  # 뭐 class 이름적힌 리스트 만들어줌
