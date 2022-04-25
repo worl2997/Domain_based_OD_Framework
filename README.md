@@ -31,8 +31,11 @@ Each line of domains.txt means one domain.
 First term in each line is domain name, and other are class name.  
 You can find downloadable class names in domain_list.csv.  
    
-For example, if you set domains.txt as below, then you can get Highway, Park domain models trained with [Car, Bus], [Person, Tree, Dog] data  
+For example, if you set domains.txt as below,  
+then you can get Highway, Park domain models,
+trained with [Car, Bus], [Person, Tree, Dog] data  
 
+you can find trainable class list at https://learnopencv.com/fast-image-downloader-for-open-images-v4/
 
 ![domain_list](./readme/domains.PNG)
 
@@ -54,7 +57,8 @@ all - download the dataset, then train domain model
 #### [ For training ]  
 --cfg :  if you already have cfg file for train, set it (else, you don't need to set it)   
 --model : model name for trainig (ex: yolov3 ,yolov3-tiny)  
---domain : set domain for train  (ex: Highway, Park)
+--domain : set domain for train  (ex: Highway, Park)  
+--batch_size : set batch_size for training (default:8)
 ![domain_list](readme/parser_for_trains.PNG)
 
 #### [ Run main.py  example ]  
