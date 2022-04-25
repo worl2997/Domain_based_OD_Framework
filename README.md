@@ -65,7 +65,7 @@ all - download the dataset, then train domain model
 ##### For download domain data 
     $ python main.py downloader --classes domains.txt --limit 10000 --n_threads 60 
 ##### For trian domain model  
-    $ python main.py train --domain Highway --batch_size 8 --epochs 200 
+    $ python main.py train --model yolov3 --domain Highway --batch_size 8 --epochs 200 --pretrained_weight weights/yolov3.weights
     
 
 
