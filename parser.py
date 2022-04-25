@@ -32,7 +32,6 @@ def parse_arguments():
     parser.add_argument("--checkpoint_interval", type=int, default=5, help="interval between saving model weights")
     parser.add_argument("--evaluation_interval", type=int, default=5, help="interval evaluations on validation set")
     parser.add_argument("--img_size", type=int, default=416, help="size of each image dimension")
-
     parser.add_argument("--logdir", type=str, default="logs", help="Defines the directory where the training log files are stored")
 
     # From below,  setting is not essential
