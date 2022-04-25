@@ -1,12 +1,11 @@
 import os
 from tqdm import tqdm
-from data_modules.utils import images_options
-from data_modules.utils import bcolors as bc
+from .utils import images_options
+from .utils import bcolors as bc
 from multiprocessing.dummy import Pool as ThreadPool
 
 
 def make_domain_list(domain_file_path, domain_list):
-
     # check the 'domain_file_path' whether it is exist or not
     if not os.path.exists(domain_file_path):
         try:
@@ -17,21 +16,20 @@ def make_domain_list(domain_file_path, domain_list):
 
     # read domains and classes from 'domain_list' file
     group_dict = {}
-    with open(domain_list, 'r') as f:
-        # TODO: change the domain_list file format to JSON
-        for list in f:
-            list = list.split(' ')
-            list = [x.strip() for x in list] # remove space or newline characters
-            list = [x.replace('_', ' ') for x in list if x != ''] # e.g. 'Traffic_light' -> 'Traffic light'
 
-            # make sure the input line contains at lease one class.
-            if len(list) < 2:
-                break
+    for list in domain_list:
+        list = list.split(' ')
+        list = [x.strip() for x in list] # remove space or newline characters
+        list = [x.replace('_', ' ') for x in list if x != ''] # e.g. 'Traffic_light' -> 'Traffic light'
 
-            domain_name = list[0]
-            classes = list[1:]
+        # make sure the input line contains at lease one class.
+        if len(list) < 2:
+            break
 
-            group_dict[domain_name] = classes
+        domain_name = list[0]
+        classes = list[1:]
+
+        group_dict[domain_name] = classes
 
     # create domain files and write their sub classes on files
     for (domain_name, classes) in group_dict.items():
@@ -44,6 +42,7 @@ def make_domain_list(domain_file_path, domain_list):
         class_len = len(group_dict[domain_name])
         group_dict[domain_name].insert(0, class_len)
 
+    print("group_dict:",group_dict)
     # group_dict will be like  -> {'group1' : [2, 'Bus', 'Truck']}, 2 is class number
     return group_dict
 

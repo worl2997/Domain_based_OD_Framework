@@ -3,8 +3,7 @@ import sys
 import time
 import urllib.request
 import pandas as pd
-
-from data_modules.utils import bcolors as bc
+from .utils import bcolors as bc
 
 OID_URL = 'https://storage.googleapis.com/openimages/2018_04/'
 

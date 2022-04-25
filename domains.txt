@@ -1,2 +1,2 @@
-Highway Car Bus
-Park Person Tree Dog
+Highway Car Truck
+Park Person

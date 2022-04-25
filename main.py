@@ -1,6 +1,6 @@
 from __future__ import division
 from parser import *
-from data_modules.bounding_boxes import *
+from OID_tools.bounding_boxes import *
 from train import *
 from utils.utils import get_data_list
 import os
@@ -40,7 +40,6 @@ if __name__ == '__main__':
             train(args, True, train_path, valid_path, class_names, model_cfg, key,model_save_path)
 
     elif args.command == 'all':
-
         domain_groups = bounding_boxes_images(args,ROOT_DIR, DEFAULT_DATA_DIR)
         domain_names = []
         for key in domain_groups:

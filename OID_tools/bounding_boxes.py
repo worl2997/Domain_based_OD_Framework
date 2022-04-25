@@ -1,7 +1,8 @@
-from data_modules.utils import *
-from data_modules.downloader import *
-from data_modules.csv_downloader import *
-from data_modules.utils import bcolors as bc
+from utils import *
+from .downloader import *
+from .csv_downloader import *
+from .utils import *
+import os
 
 
 def bounding_boxes_images(args, root_dir, default_oid_dir):
@@ -28,14 +29,18 @@ def bounding_boxes_images(args, root_dir, default_oid_dir):
         print('download classes: ' + str(args.classes))
 
     domain_list = args.classes
-    # domain_list =>  ['group1 Orange Apple', 'group2 Bus Traffic_light Car Fire_hydrant']
     name_file_path = os.path.join(default_oid_dir, 'domain_list')
-    domain_dict = make_domain_list(name_file_path,
-                                   domain_list)  # create class list file for each domain in data/custom/domain_list directory
+    # domain_list =>  ['group1 Orange Apple', 'group2 Bus Traffic_light Car Fire_hydrant']
+
+    print("name_file_path:", name_file_path)
+    print("domain_list:", domain_list)
+
+    domain_dict = make_domain_list(name_file_path, domain_list)
+    # create class list file for each domain in data/custom/domain_list directory
     mkdirs(dataset_dir, csv_dir, domain_dict)
 
     for domain_name, class_list in domain_dict.items():
-        print(bc.INFO + 'Downloading {} together.'.format(str(class_list[1:])) + bc.ENDC)
+        print(bcolors.INFO + 'Downloading {} together.'.format(str(class_list[1:])) + bcolors.ENDC)
         error_csv(name_file_class, csv_dir, args.yes)
         df_classes = pd.read_csv(classes_csv_path, header=None)
         class_dict = {}
