@@ -23,11 +23,7 @@ def parse_arguments():
 
     parser.add_argument("--model", type=str, default=None, help="model for train")
     parser.add_argument("--domain", type=str, default=None, help="domain name for train")
-
-
-    parser.add_argument("--gpu_num", type=int, default=0, help="select number of gpu") # multi-gpu training function will be implemented later
     parser.add_argument("--epochs", type=int, default=100, help="number of epochs")
-    parser.add_argument("--batch_size", type=int, default=8, help="size of each image batch")
     parser.add_argument("--cfg", type=str, default=None, help="path to model definition file")
     parser.add_argument("--pretrained_weights", type=str, help="if specified starts from checkpoint model")
     parser.add_argument("--checkpoint_interval", type=int, default=5, help="interval between saving model weights")
@@ -35,6 +31,8 @@ def parse_arguments():
     parser.add_argument("--img_size", type=int, default=416, help="size of each image dimension")
     parser.add_argument("--logdir", type=str, default="logs", help="Defines the directory where the training log files are stored")
 
+    parser.add_argument("--batch_size", type=int, default=8, help="size of each image batch")
+    # parser.add_argument("--gpu_num", type=int, default=0, help="select number of gpu") # multi-gpu training function will be implemented later
     # From below,  setting is not essential
     parser.add_argument('--Dataset', required=False,
                         metavar="/path/to/custom/csv/",

@@ -39,7 +39,7 @@ For example, if you set domains.txt as below, then you can get Highway, Park dom
 ##  Parser setting and run 
 There are several parsers that need to be configured for downloading data, and training model 
 
-#### [ For download dataset ]  
+#### [ For download domain dataset ]  
 command :   
 download - only download dataset   
 train - only train model   
@@ -52,9 +52,9 @@ all - download the dataset, then train domain model
 ![domain_list](./readme/parser_for_downloading.PNG)
 
 #### [ For training ]  
-batch_size : set your training batch_size 
-model_def : only config if you want to train with your specific model.cfg file, if you don't set, then trained with 'yolov3.cfg'  
-(see 34 or 55 line in main.py)
+--cfg :  if you already have cfg file for train, set it (else, you don't need to set it)   
+--model : model name for trainig (ex: yolov3 ,yolov3-tiny)
+--domain : set domain for train  (ex: Highway, Park)
 ![domain_list](readme/parser_for_trains.PNG)
 
 #### [ Run main.py  example ]  
