@@ -53,7 +53,7 @@ all - download the dataset, then train domain model
 
 #### [ For training ]  
 --cfg :  if you already have cfg file for train, set it (else, you don't need to set it)   
---model : model name for trainig (ex: yolov3 ,yolov3-tiny)
+--model : model name for trainig (ex: yolov3 ,yolov3-tiny)  
 --domain : set domain for train  (ex: Highway, Park)
 ![domain_list](readme/parser_for_trains.PNG)
 
