@@ -51,15 +51,14 @@ def make_config_file(root_dir, default_oid_dir, domain_dict):
             f.write('names=' + names + '\n')
 
 
-def get_domain_group(DEFAULT_DATA_DIR):
-    list_path = os.path.join(DEFAULT_DATA_DIR,'domain_list')
+def get_domain_group(DEFAULT_DATA_DIR, domain):
+    list_path = os.path.join(DEFAULT_DATA_DIR, domain)
     domain_dict = {}
     n_file = os.listdir(list_path)
     print(n_file)
-    for i in n_file:
-        fp = open(os.path.join(list_path, i), "r")
-        names = fp.read().split("\n")  # 뭐 class 이름적힌 리스트 만들어줌
-        domain_dict[i[:-5]] = [len(names) - 1] + names[:-1]
+    fp = open(os.path.join(list_path, n_file), "r")
+    names = fp.read().split("\n")  # 뭐 class 이름적힌 리스트 만들어줌
+    domain_dict[n_file[:-5]] = [len(names) - 1] + names[:-1]
     return domain_dict
 
 def parse_custom_data(custom_path ,group_name):

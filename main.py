@@ -18,13 +18,8 @@ if __name__ == '__main__':
         domain_groups = bounding_boxes_images(args, ROOT_DIR, DEFAULT_DATA_DIR)
         print(domain_groups)
     elif args.command == 'train':
-        domain_groups = get_domain_group(DEFAULT_DATA_DIR) #
-        # {'Park': [3, 'Person', 'Tree', 'Dog'], 'Highway': [2, 'Car', 'Bus']}
-        domain_names = []
-        for key in domain_groups:
-            domain_names.append(key)
-
-        data_files = get_data_list(DATA_FILE_DIR)
+        domain_groups = get_domain_group(DEFAULT_DATA_DIR)
+        data_files = get_data_list(DATA_FILE_DIR, args.domain)
 
         for key, data in data_files.items():
             data_config = parse_data_config(data)
@@ -35,8 +30,8 @@ if __name__ == '__main__':
             if args.model_def:
                 model_cfg = args.model_def
             else:
-                model_cfg = get_group_cfg(cfg_path,'yolo', data_config['classes']) # trained with yolov3 model in default
-            print('model_cfg_file:'+str(model_cfg))
+                model_cfg = get_group_cfg(cfg_path,'yolo', data_config['classes'])  #trained with yolov3 model in default
+            print('model_cfg_file:'+ str(model_cfg))
             train(args, True, train_path, valid_path, class_names, model_cfg, key,model_save_path)
 
     elif args.command == 'all':

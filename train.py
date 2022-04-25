@@ -43,7 +43,7 @@ metrics = [
 ]
         
 def train(args, custom, train_path, valid_path, class_names, model_cfg, domain_name,model_save_path):
-    logger = Logger(args.logdir)  # 로거 생성하는 부분
+    logger = Logger(args.logdir)
     GPU_NUM = args.gpu_num
     device = torch.device(f'cuda:{GPU_NUM}' if torch.cuda.is_available() else 'cpu')
     torch.cuda.set_device(device)  # change allocation of current GPU
@@ -64,7 +64,6 @@ def train(args, custom, train_path, valid_path, class_names, model_cfg, domain_n
             model.load_darknet_weights(args.pretrained_weights)
 
     dataset = ListDataset(custom, train_path, multiscale=args.multiscale_training, img_size=args.img_size, transform=AUGMENTATION_TRANSFORMS)
-
     dataloader = torch.utils.data.DataLoader(
         dataset,
         batch_size=args.batch_size,
@@ -73,10 +72,8 @@ def train(args, custom, train_path, valid_path, class_names, model_cfg, domain_n
         pin_memory=True,
         collate_fn=dataset.collate_fn,
     )
-
     optimizer = torch.optim.Adam(model.parameters())
 
-# 학습시키는 부분
     print("=========================== "+domain_name+" model training... ==========================")
     for epoch in range(args.epochs):
         model.train()

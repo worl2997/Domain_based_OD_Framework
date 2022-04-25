@@ -12,9 +12,10 @@ import matplotlib.pyplot as plt
 import matplotlib.patches as patches
 
 
-def get_data_list(DATA_FILE_DIR):
-    file_list = [os.path.join(DATA_FILE_DIR, x) for x in os.listdir(DATA_FILE_DIR)]
+def get_data_list(DATA_FILE_DIR, domain):
+    file_list = os.path.join(DATA_FILE_DIR, domain + '.data')
     data_dict = {}
+    data_dict['']
     for data in file_list:
         file_name = data.split('/')
         data_dict[file_name[-1][:-5]] = data

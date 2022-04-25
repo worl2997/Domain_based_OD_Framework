@@ -18,6 +18,7 @@ def parse_arguments():
                         metavar="list of classes",
                         help="Sequence of 'strings' of the wanted classes")
 
+
     parser.add_argument('--noLabels', required=False, action='store_true',
                         help='No labels creations')
 
@@ -30,6 +31,7 @@ def parse_arguments():
     parser.add_argument("--checkpoint_interval", type=int, default=5, help="interval between saving model weights")
     parser.add_argument("--evaluation_interval", type=int, default=5, help="interval evaluations on validation set")
     parser.add_argument("--img_size", type=int, default=416, help="size of each image dimension")
+    parser.add_argument("--domain", type=str, default=None, help="domain name for train")
 
     parser.add_argument("--logdir", type=str, default="logs", help="Defines the directory where the training log files are stored")
 
