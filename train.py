@@ -76,7 +76,6 @@ def train(args, custom, train_path, valid_path, class_names, model_cfg, model_sa
 
     optimizer = torch.optim.Adam(model.parameters())
 
-# 학습시키는 부분
     print("=========================== "+args.domain+" model training... ==========================")
     for epoch in range(args.epochs):
         model.train()
