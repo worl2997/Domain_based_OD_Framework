@@ -75,7 +75,7 @@ def parse_custom_data(custom_path, group_name):
 # 훈련시키려는 도메인의 클래스 개수에 따라 yolo-tiny,
 # 혹은 yolov3의 cfg파일을 베이스로 새 model-cfg파일을 생성하고 경로반환함
 
-def get_group_cfg(path, domain, model_type, class_num):
+def get_custom_cfg(path, domain, model_type, class_num):
     if model_type == "yolov3-tiny":
         custom_path = os.path.join(path, 'create_custom_yolov3_tiny.sh')
         cfg_name = domain +'_yolov3-tiny_' + str(class_num) + '.cfg'
