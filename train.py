@@ -14,8 +14,7 @@ from models import load_model
 from utils.logger import Logger
 from utils.utils import to_cpu, load_classes, print_environment_info, provide_determinism, worker_seed_set
 from utils.datasets import ListDataset
-from .utils.augmentations import AUGMENTATION_TRANSFORMS
-#from pytorchyolo.utils.transforms import DEFAULT_TRANSFORMS
+from utils.augmentations import AUGMENTATION_TRANSFORMS
 from utils.parse_config import parse_data_config
 from utils.loss import compute_loss
 from test import _evaluate, _create_validation_data_loader
@@ -23,6 +22,8 @@ from test import _evaluate, _create_validation_data_loader
 from terminaltables import AsciiTable
 
 from torchsummary import summary
+
+
 
 
 def _create_data_loader(custom, img_path, batch_size, img_size, n_cpu, multiscale_training=False):
@@ -57,8 +58,10 @@ def _create_data_loader(custom, img_path, batch_size, img_size, n_cpu, multiscal
     return dataloader
 
 
-def train(args, custom, model_cfg):
-    # model_save_path =
+def train(args, model_cfg, model_save_path):
+    print_environment_info()
+    save_path = os.path.join(model_save_path, args.domain)
+    pth_file_name = args.domain + '_' + args.model
 
     if args.seed != -1:
         provide_determinism(args.seed)
@@ -94,7 +97,7 @@ def train(args, custom, model_cfg):
 
     # Load training dataloader
     dataloader = _create_data_loader(
-        custom,
+        args.custom,
         train_path,
         mini_batch_size,
         model.hyperparams['height'],
@@ -103,7 +106,7 @@ def train(args, custom, model_cfg):
 
     # Load validation dataloader
     validation_dataloader = _create_validation_data_loader(
-        custom,
+        args.custom,
         valid_path,
         mini_batch_size,
         model.hyperparams['height'],
@@ -207,9 +210,9 @@ def train(args, custom, model_cfg):
 
         # Save model to checkpoint file
         if epoch % args.checkpoint_interval == 0:
-            checkpoint_path = f"checkpoints/yolov3_ckpt_{epoch}.pth"
-            print(f"---- Saving checkpoint to: '{checkpoint_path}' ----")
-            torch.save(model.state_dict(), checkpoint_path)
+            print(f"---- Saving checkpoint to: '{save_path}' ----")
+            torch.save(model.state_dict(), os.path.join(save_path, pth_file_name + f"_%d.pth" % epoch)
+)
 
         # ########
         # Evaluate

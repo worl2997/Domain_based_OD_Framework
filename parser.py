@@ -6,15 +6,17 @@ def parse_arguments():
     parser.add_argument("command",
                         metavar="<command> 'downloader', 'train'",
                         help="'downloader' or 'train'")
-    parser.add_argument("--model_t", type=str, default=None,
+
+    parser.add_argument("--model", type=str, default=None,
                         help="which model you want to make cfg file ex: yolov3, yolov3-tiny")
     parser.add_argument("--domain", type=str, default=None, help="domain name for train")
+    parser.add_argument("--custom", type=bool, default=True, help="custom train or not")
 
 
     ####################################
     # settings for training
     ####################################
-    parser.add_argument("-m", "--model", type=str, default="config/yolov3.cfg", help="Path to model definition file (.cfg)")
+    parser.add_argument("-cfg", "--cfg", type=str, default="config/yolov3.cfg", help="Path to model definition file (.cfg)")
     parser.add_argument("-d", "--data", type=str, default="config/coco.data", help="Path to data config file (.data)")
     parser.add_argument("-e", "--epochs", type=int, default=300, help="Number of epochs")
     parser.add_argument("-v", "--verbose", action='store_true', help="Makes the training more verbose")
@@ -72,10 +74,3 @@ def parse_arguments():
 
 
 
-def train(args, custom, train_path, valid_path, class_names, model_cfg, model_save_path):
-
-    save_path = os.path.join(model_save_path,args.domain)
-    pth_file_name = args.domain + '_' + args.model_t
-torch.save(model.state_dict(), os.path.join(save_path, pth_file_name + f"_%d.pth" % epoch))
-print("=========================== " + args.domain + " model training... ==========================")
-gs.domain + '_' + args.model_t
