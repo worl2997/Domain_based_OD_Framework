@@ -6,7 +6,7 @@ import os
 
 
 def bounding_boxes_images(args, root_dir, default_oid_dir):
-    if not args.Dataset:
+    if not args.OID_CSV:
         dataset_dir = default_oid_dir  # ../data/custom
         csv_dir = os.path.join(default_oid_dir, 'csv_folder')
     else:

@@ -69,7 +69,9 @@ def parse_arguments():
     parser.add_argument('--image_IsInside', required=False, choices=['0', '1'],
                         metavar="1 or 0",
                         help='Optional characteristic of the images. Indicates a picture taken from the inside of the object.')
-
+    parser.add_argument('--OID_CSV', required=False,
+                        metavar="/path/to/custom/csv/",
+                        help='Directory of the OID dataset folder')
     return parser.parse_args()
 
 

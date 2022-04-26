@@ -18,7 +18,6 @@ if __name__ == '__main__':
     path = PATH()
     if args.command == 'downloader':
         domain_groups = bounding_boxes_images(args, path.ROOT_DIR, path.DEFAULT_DATA_DIR)
-        print(domain_groups)
 
     elif args.command == 'train':
         data_files = os.path.join(path.DATA_FILE_DIR, args.data) # data file path

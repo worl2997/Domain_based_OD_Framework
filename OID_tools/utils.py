@@ -28,7 +28,6 @@ def make_valid_txt(data_dir, domain_name):
 
 def make_data_file(root_dir, default_oid_dir, domain_dict):
     print('in make config, domain_dict:' + str(domain_dict))
-
     config_file_path = os.path.join(root_dir, 'config', 'custom_data')
 
     if not os.path.isdir(config_file_path):

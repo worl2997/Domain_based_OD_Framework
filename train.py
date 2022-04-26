@@ -74,7 +74,7 @@ def train(args, model_cfg, path):
 
     # Get data configuration
 
-    data_config = os.path.join(path.DATA_FILE_DIR, args.data)
+    data_config = os.path.join(path.DATA_FILE_DIR, args.domain +'.data')  # args.data
     train_path = data_config["train"]
     valid_path = data_config["valid"]
     class_names = load_classes(data_config["names"])
