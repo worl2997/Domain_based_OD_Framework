@@ -1,22 +1,15 @@
+from torch.utils.data import Dataset
+import torch.nn.functional as F
+import torch
 import glob
 import random
 import os
-import sys
 import warnings
 import numpy as np
 from PIL import Image
 from PIL import ImageFile
 
 ImageFile.LOAD_TRUNCATED_IMAGES = True
-
-import imgaug.augmenters as iaa
-from imgaug.augmentables.bbs import BoundingBox, BoundingBoxesOnImage
-from imgaug.augmentables.segmaps import SegmentationMapsOnImage
-
-import torch
-import torch.nn.functional as F
-
-from torch.utils.data import Dataset
 
 
 def pad_to_square(img, pad_value):
@@ -31,9 +24,11 @@ def pad_to_square(img, pad_value):
 
     return img, pad
 
+
 def resize(image, size):
     image = F.interpolate(image.unsqueeze(0), size=size, mode="nearest").squeeze(0)
     return image
+
 
 class ImageFolder(Dataset):
     def __init__(self, folder_path, transform=None):
@@ -44,7 +39,7 @@ class ImageFolder(Dataset):
 
         img_path = self.files[index % len(self.files)]
         img = np.array(
-            Image.open(img_path).convert('RGB'), 
+            Image.open(img_path).convert('RGB'),
             dtype=np.uint8)
 
         # Label Placeholder
@@ -59,34 +54,21 @@ class ImageFolder(Dataset):
     def __len__(self):
         return len(self.files)
 
-def parse_label_data(img_list):
-    label = []
-    for file_path in img_list:
-        b= file_path.split('/')
-        file_name = b[-1].replace('.jpg','.txt').replace(".png", ".txt")
-        new = b[:-1]
-        new.append('Label')
-        new.append(file_name)
-        label_path = '/'.join(new)
-        label.append(label_path)
-    return label
 
-# ListDataset 이라는 클래스
-# train.py에서 ListDataset 클래스를 호출할 떄 input 값으로 train.txt (입력이미지 파일 경로들이 적힌 txt)
 class ListDataset(Dataset):
-    def __init__(self, custom, file_path, img_size=416, multiscale=True, transform=None ):
-        if custom:
-            with open(file_path, "r") as file:
-                self.img_files = file.readlines()  # 이미지 파일의 path들을 읽어들임
-            self.label_files = parse_label_data(self.img_files)
+    def __init__(self, list_path, img_size=416, multiscale=True, transform=None):
+        with open(list_path, "r") as file:
+            self.img_files = file.readlines()
 
-        else:
-            with open(file_path, "r") as file:
-                self.img_files = file.readlines()  # 이미지 파일의 path들을 읽어드림
-            self.label_files = [
-                path.replace("images", "labels").replace(".png", ".txt").replace(".jpg", ".txt")
-                for path in self.img_files
-            ]
+        self.label_files = []
+        for path in self.img_files:
+            image_dir = os.path.dirname(path)
+            label_dir = "labels".join(image_dir.rsplit("images", 1))
+            assert label_dir != image_dir, \
+                f"Image path must contain a folder named 'images'! \n'{image_dir}'"
+            label_file = os.path.join(label_dir, os.path.basename(path))
+            label_file = os.path.splitext(label_file)[0] + '.txt'
+            self.label_files.append(label_file)
 
         self.img_size = img_size
         self.max_objects = 100
@@ -97,7 +79,7 @@ class ListDataset(Dataset):
         self.transform = transform
 
     def __getitem__(self, index):
-        
+
         # ---------
         #  Image
         # ---------
@@ -106,9 +88,8 @@ class ListDataset(Dataset):
             img_path = self.img_files[index % len(self.img_files)].rstrip()
 
             img = np.array(Image.open(img_path).convert('RGB'), dtype=np.uint8)
-        except Exception as e:
-            pass
-            # print(f"Could not read image '{img_path}'.")
+        except Exception:
+            print(f"Could not read image '{img_path}'.")
             return
 
         # ---------
@@ -121,7 +102,7 @@ class ListDataset(Dataset):
             with warnings.catch_warnings():
                 warnings.simplefilter("ignore")
                 boxes = np.loadtxt(label_path).reshape(-1, 5)
-        except Exception as e:
+        except Exception:
             print(f"Could not read label '{label_path}'.")
             return
 
@@ -131,11 +112,11 @@ class ListDataset(Dataset):
         if self.transform:
             try:
                 img, bb_targets = self.transform((img, boxes))
-            except:
-                print(f"Could not apply transform.")
+            except Exception:
+                print("Could not apply transform.")
                 return
-        return img_path, img, bb_targets
 
+        return img_path, img, bb_targets
 
     def collate_fn(self, batch):
         self.batch_count += 1
@@ -144,11 +125,12 @@ class ListDataset(Dataset):
         batch = [data for data in batch if data is not None]
 
         paths, imgs, bb_targets = list(zip(*batch))
-        
+
         # Selects new image size every tenth batch
         if self.multiscale and self.batch_count % 10 == 0:
-            self.img_size = random.choice(range(self.min_size, self.max_size + 1, 32))
-        
+            self.img_size = random.choice(
+                range(self.min_size, self.max_size + 1, 32))
+
         # Resize images to input shape
         imgs = torch.stack([resize(img, self.img_size) for img in imgs])
 
@@ -156,9 +138,8 @@ class ListDataset(Dataset):
         for i, boxes in enumerate(bb_targets):
             boxes[:, 0] = i
         bb_targets = torch.cat(bb_targets, 0)
-        
+
         return paths, imgs, bb_targets
 
     def __len__(self):
         return len(self.img_files)
-

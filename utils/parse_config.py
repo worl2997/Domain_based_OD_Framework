@@ -19,14 +19,6 @@ def parse_model_config(path):
     return module_defs
 
 def parse_data_config(path):
-    # 커스텀 데이터의 경우 config/custom.data 파일을 읽어와 아래와 같이 파싱함
-    '''
-    config/custom.data 파일 내용
-    classes= 1
-    train=data/custom/train.txt
-    valid=data/custom/valid.txt
-    names=data/custom/classes.names
-    '''
     options = dict()
     options['gpus'] = '0,1,2,3'
     options['num_workers'] = '10'

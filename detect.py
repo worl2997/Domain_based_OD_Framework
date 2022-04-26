@@ -79,7 +79,7 @@ if __name__ == "__main__":
         # Get detections
         with torch.no_grad():
             detections = model(input_imgs)
-            detections = non_max_suppression(detections, opt.conf_thres, opt.nms_thres)
+            detections = non_max_suppression(detections, opt.conf_thres, opt.nms_thres) # yolo 아웃풋을 기반으로 nms를진행함
 
         # Log progress
         current_time = time.time()
