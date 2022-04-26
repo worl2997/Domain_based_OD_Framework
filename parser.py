@@ -28,9 +28,6 @@ def parse_arguments():
     parser.add_argument("--nms_thres", type=float, default=0.5, help="Evaluation: IOU threshold for non-maximum suppression")
     parser.add_argument("--logdir", type=str, default="logs", help="Directory for training log files (e.g. for TensorBoard)")
     parser.add_argument("--seed", type=int, default=-1, help="Makes results reproducable. Set -1 to disable.")
-    args = parser.parse_args()
-
-
 
 
     ####################################
@@ -79,3 +76,6 @@ def train(args, custom, train_path, valid_path, class_names, model_cfg, model_sa
 
     save_path = os.path.join(model_save_path,args.domain)
     pth_file_name = args.domain + '_' + args.model_t
+torch.save(model.state_dict(), os.path.join(save_path, pth_file_name + f"_%d.pth" % epoch))
+print("=========================== " + args.domain + " model training... ==========================")
+gs.domain + '_' + args.model_t

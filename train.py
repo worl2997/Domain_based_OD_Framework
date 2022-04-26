@@ -57,7 +57,8 @@ def _create_data_loader(custom, img_path, batch_size, img_size, n_cpu, multiscal
     return dataloader
 
 
-def train(args, custom, model_cfg, model_save_path):
+def train(args, custom, model_cfg):
+    # model_save_path =
 
     if args.seed != -1:
         provide_determinism(args.seed)
@@ -129,9 +130,8 @@ def train(args, custom, model_cfg, model_save_path):
     else:
         print("Unknown optimizer. Please choose between (adam, sgd).")
 
-    # skip epoch zero, because then the calculations for when to evaluate/checkpoint makes more intuitive sense
-    # e.g. when you stop after 30 epochs and evaluate every 10 epochs then the evaluations happen after: 10,20,30
-    # instead of: 0, 10, 20
+
+    print("=========================== " + args.domain + " model training... ==========================")
     for epoch in range(1, args.epochs+1):
 
         print("\n---- Training Model ----")
