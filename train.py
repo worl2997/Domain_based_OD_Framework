@@ -58,9 +58,9 @@ def _create_data_loader(custom, img_path, batch_size, img_size, n_cpu, multiscal
     return dataloader
 
 
-def train(args, model_cfg, model_save_path):
+def train(args, model_cfg, path):
     print_environment_info()
-    save_path = os.path.join(model_save_path, args.domain)
+    save_path = os.path.join(path.model_save_path, args.domain)
     pth_file_name = args.domain + '_' + args.model
 
     if args.seed != -1:
@@ -73,7 +73,8 @@ def train(args, model_cfg, model_save_path):
     os.makedirs("checkpoints", exist_ok=True)
 
     # Get data configuration
-    data_config = parse_data_config(args.data)
+
+    data_config = os.path.join(path.DATA_FILE_DIR, args.data)
     train_path = data_config["train"]
     valid_path = data_config["valid"]
     class_names = load_classes(data_config["names"])
