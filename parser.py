@@ -1,21 +1,19 @@
 import argparse
 
 def parse_arguments():
-    parser = argparse.ArgumentParser(description='Open Image Dataset Downloader')
-
+    parser = argparse.ArgumentParser(description='Open Image Dataset Downloader  & train')
     parser.add_argument("command",
                         metavar="<command> 'downloader', 'train'",
                         help="'downloader' or 'train'")
 
-    parser.add_argument("--model", type=str, default=None,
-                        help="which model you want to make cfg file ex: yolov3, yolov3-tiny")
-    parser.add_argument("--domain", type=str, default=None, help="domain name for train")
-    parser.add_argument("--custom", type=bool, default=True, help="custom train or not")
-
-
     ####################################
     # settings for training
     ####################################
+    parser.add_argument("--model", type=str, default=None,
+                       help="which model you want to make cfg file ex: yolov3, yolov3-tiny")
+    parser.add_argument("--domain", type=str, default=None, help="domain name for train")
+    parser.add_argument("--custom", type=bool, default=True, help="custom train or not")
+    parser.add_argument("--classes", type=int, default=80, help="Number of classes for training")
     parser.add_argument("-cfg", "--cfg", type=str, default="config/yolov3.cfg", help="Path to model definition file (.cfg)")
     parser.add_argument("-d", "--data", type=str, default="config/coco.data", help="Path to data config file (.data)")
     parser.add_argument("-e", "--epochs", type=int, default=300, help="Number of epochs")
@@ -38,7 +36,7 @@ def parse_arguments():
     parser.add_argument('--limit', required=False, type=int, default=None,
                         metavar="integer number",
                         help='Optional limit on number of images to download')
-    parser.add_argument('--classes', required=False, default='domains.txt',nargs='+',
+    parser.add_argument('--dm_list', required=False, default='domains.txt',nargs='+',
                         metavar="list of classes",
                         help="Sequence of 'strings' of the wanted classes")
     parser.add_argument('--noLabels', required=False, action='store_true',

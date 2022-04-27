@@ -20,16 +20,10 @@ if __name__ == '__main__':
         domain_groups = bounding_boxes_images(args, path.ROOT_DIR, path.DEFAULT_DATA_DIR)
 
     elif args.command == 'train':
-        data_files = os.path.join(path.DATA_FILE_DIR, args.data) # data file path
-        data_config = parse_data_config(data_files)
-        train_path = data_config['train']
-        valid_path = data_config["valid"]
-        class_names = load_classes(data_config["names"])
         if args.cfg:
             model_cfg = args.cfg
         else:
             # custom된 cfg 파일이 없을경우, 학습하고자 하는 모델의 custom cfg 파일을 만들어줌
-            model_cfg = get_custom_cfg(path.cfg_path, args.domain, args.model, data_config['classes'])
-
+            model_cfg = get_custom_cfg(path.cfg_path, args.domain, args.model, args.classes)
         train(args, model_cfg, path)
 

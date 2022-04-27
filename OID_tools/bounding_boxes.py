@@ -20,13 +20,13 @@ def bounding_boxes_images(args, root_dir, default_oid_dir):
     folder = ['train', 'validation']
     file_list = ['train-annotations-bbox.csv', 'validation-annotations-bbox.csv']
 
-    if args.classes[0].endswith('.txt'):
-        with open(args.classes[0]) as f:
-            args.classes = f.readlines()
-            args.classes = [x.strip() for x in args.classes]
-        print('download classes: ' + str(args.classes))
+    if args.dm_list[0].endswith('.txt'):
+        with open(args.dm_list[0]) as f:
+            args.dm_list = f.readlines()
+            args.dm_list = [x.strip() for x in args.dm_list]
+        print('download classes: ' + str(args.dm_list))
 
-    domain_list = args.classes
+    domain_list = args.dm_list
     name_file_path = os.path.join(default_oid_dir, 'domain_list')
     # domain_list =>  ['group1 Orange Apple', 'group2 Bus Traffic_light Car Fire_hydrant']
 

@@ -15,7 +15,6 @@ from utils.logger import Logger
 from utils.utils import to_cpu, load_classes, print_environment_info, provide_determinism, worker_seed_set
 from utils.datasets import ListDataset
 from utils.augmentations import AUGMENTATION_TRANSFORMS
-from utils.parse_config import parse_data_config
 from utils.loss import compute_loss
 from test import _evaluate, _create_validation_data_loader
 
