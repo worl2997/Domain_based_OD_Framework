@@ -40,7 +40,8 @@ you can find trainable class list at https://learnopencv.com/fast-image-download
 ![domain_list](./readme/domains.PNG)
 
 ##  Parser setting and run 
-There are several parsers that need to be configured for downloading data, and training model 
+There are several parsers that need to be configured for downloading data, and model training  
+you can find out more about parser at **parser.py**
 
 #### [ For download domain dataset ]  
 command :   
@@ -52,21 +53,26 @@ all - download the dataset, then train domain model
 
 --classes : set the path of domains.txt file
 
-![domain_list](./readme/parser_for_downloading.PNG)
+![domain_list](./readme/parer_for_download.PNG)
 
 #### [ For training ]  
 --cfg :  if you already have cfg file for train, set it (else, you don't need to set it)   
 --model : model name for trainig (ex: yolov3 ,yolov3-tiny)  
 --domain : set domain for train  (ex: Highway, Park)  
---batch_size : set batch_size for training (default:8)
-![domain_list](readme/parser_for_trains.PNG)
+![domain_list](readme/parser_for_training.PNG)
 
 #### [ Run main.py  example ]  
 ##### For download domain data 
-    $ python main.py downloader --classes domains.txt --limit 10000 --n_threads 60 
+    $  python main.py downloader --dm_list domains.txt --limit 10 
 ##### For trian domain model  
-    $ python main.py train --model yolov3 --domain Highway --batch_size 8 --epochs 200 --pretrained_weight weights/yolov3.weights
+    # if you train the model supported by the framework (ex: yolov3, yolov3-tiny)
+    $  python main.py train --model yolov3 --domain Highway --classes 2 --epochs 200 --pretrained_weight weights/yolov3.weights  
+  
+    # if else, specify your model cfg file path 
+    $  python main.py --model <name of your model for save_file naming> train --cfg <cfg path> --domain Highway --classes 2 --epochs 200
+
     
+
 
 
 #### Tensorboard

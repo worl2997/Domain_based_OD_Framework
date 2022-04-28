@@ -22,7 +22,6 @@ from utils.parse_config import parse_data_config
 def evaluate_model_file(model_path, weights_path, img_path, class_names, batch_size=8, img_size=416,
                         n_cpu=8, iou_thres=0.5, conf_thres=0.5, nms_thres=0.5, verbose=True):
     """Evaluate model on validation dataset.
-
     :param model_path: Path to model definition file (.cfg)
     :type model_path: str
     :param weights_path: Path to weights or checkpoint file (.weights or .pth)

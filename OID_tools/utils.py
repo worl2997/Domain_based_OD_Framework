@@ -1,7 +1,6 @@
 import os
+'''데이터셋을 파싱하거나 다운로드 하는데 필요한 유틸 함수들 '''
 
-
-# 데이터셋을 파싱하거나 다운로드 하는데 필요한 유틸 함수들
 def make_train_txt(data_dir, domain_name):
     path_ = os.path.join(data_dir, 'train', domain_name)
     file_name = domain_name + '_train.txt'
@@ -75,7 +74,7 @@ def parse_custom_data(custom_path, group_name):
 
 # 훈련시키려는 도메인의 클래스 개수에 따라 yolo-tiny,
 # 혹은 yolov3의 cfg파일을 베이스로 새 model-cfg파일을 생성하고 경로반환함
-
+#
 def get_custom_cfg(path, domain, model_type, class_num):
     if model_type == "yolov3-tiny":
         custom_path = os.path.join(path, 'create_custom_yolov3_tiny.sh')
