@@ -117,11 +117,11 @@ train.txt, valid.txt files contain the path of image datasets
 if you want to use other dataset, not open-Image dataset, 
 you should follow below process (if not, you just follow above command in "Run main.py example")
 
-#### Classes
+### Classes
 Add class name file to `data/custom/domain_list/[classes.name]`. This file should have one row per class name. like as below  
 ![domain_list](readme/name_file.PNG)  
 
-#### Image Folder
+### Image Folder
 Move the images of your dataset to `data/custom/train/[model domain name]`, `data/custom/validation/[model domain name]`, like directory example picture that shown above. Also, you should make train.txt file and valid.txt file as below 
 ![domain_list](readme/example.PNG)  
 ![domain_list](readme/example_directory.PNG)  
@@ -129,14 +129,14 @@ but actually, you don't have to save the file in this directory. just write the 
 
 
 
-#### Annotation Folder
+### Annotation Folder
 Save your annotations to `data/custom/train/[your domain]/Labels/`, and `data/custom/validation/[your domain]/Labels/.  
 
 The dataloader expects that the annotation file corresponding to the image `data/custom/train/[your domain]/train.jpg` has the path `data/custom/train/[your_domain]/Labels/train.txt`.  
 
 If you want to train the data with yolov3 model, each row in the annotation file should define one bounding box, using the syntax `label_idx x_center y_center width height`. The coordinates should be scaled `[0, 1]`, and the `label_idx` should be zero-indexed and correspond to the row number of the class name in `data/custom/classes.names`.
 
-#### Make data file 
+### Make data file 
 make data file at config/custom_data/ like as below  
 ![domain_list](readme/datafile.png)  
 classes : number of domain's class number   
@@ -146,22 +146,18 @@ names : path of .name file
 
 
 
-#### Train
+### Train
 To train on the custom dataset run:
 
-you should make model_cfg file for your custom data file.  
+you should make model_cfg file for your custom data file.   
+if you want to make yolov3 based custom cfg file, follow below 
 ```
 cd config/custom_cfg 
 bash create_custom_model.sh [class number]
 ```
-then you can get your custom cfg file for yolov3 training.
-and run command below  
-```
-$ python3 main.py --model_def config/yolov3-custom.cfg --batch_size 8 --epochs 200
-```
+else, if you want to make other yolo based model, you should make custom cfg file yourself  
 
-Add `--pretrained_weights weights/darknet53.conv.74` to train using a backend pretrained on ImageNet.
-
+then run the train code as previously described 
 
 ## Detection test with trained model
 before test, you should change the yolov3-custom.cfg file like below.  
