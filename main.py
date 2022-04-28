@@ -17,7 +17,7 @@ if __name__ == '__main__':
     args = parse_arguments()
     path = PATH()
     if args.command == 'downloader':
-        domain_groups = bounding_boxes_images(args, path.ROOT_DIR, path.DEFAULT_DATA_DIR)
+        domain_groups = bounding_boxes_images(args, path)
 
     elif args.command == 'train':
         if args.cfg:

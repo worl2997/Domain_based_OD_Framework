@@ -36,7 +36,7 @@ def parse_label_data(img_list):
         file_name = b[-1].replace('.jpg', '.txt').replace(".png", ".txt")
         new = b[:-1]
         new.append('Label')
-        new.append(file_name[:-1])
+        new.append(file_name)
         label_path = '/'.join(new)
         label.append(label_path)
     return label
@@ -107,7 +107,6 @@ class ListDataset(Dataset):
         #  Label
         # ---------
         try:
-            print('len of data list :', len(self.label_files))
             label_path = self.label_files[index % len(self.img_files)].rstrip()
             # Ignore warning if file is empty
             with warnings.catch_warnings():

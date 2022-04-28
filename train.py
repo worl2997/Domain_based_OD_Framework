@@ -79,7 +79,6 @@ def train(args, model_cfg, path):
     valid_path = data_config["valid"]
     class_names = load_classes(data_config["names"])
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-
     # ############
     # Create model
     # ############
@@ -222,6 +221,7 @@ def train(args, model_cfg, path):
         if epoch % args.evaluation_interval == 0:
             print("\n---- Evaluating Model ----")
             # Evaluate the model on the validation set
+
             metrics_output = _evaluate(
                 model,
                 validation_dataloader,

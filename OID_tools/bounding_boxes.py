@@ -5,7 +5,9 @@ from .utils import *
 import os
 
 
-def bounding_boxes_images(args, root_dir, default_oid_dir):
+def bounding_boxes_images(args,path):
+    root_dir = path.ROOT_DIR
+    default_oid_dir = path.DEFAULT_DATA_DIR
     if not args.OID_CSV:
         dataset_dir = default_oid_dir  # ../data/custom
         csv_dir = os.path.join(default_oid_dir, 'csv_folder')
@@ -46,8 +48,6 @@ def bounding_boxes_images(args, root_dir, default_oid_dir):
 
         for class_name in class_list[1:]:
             class_dict[class_name] = df_classes.loc[df_classes[1] == class_name].values[0][0]
-
-        print(class_dict)
 
         for class_name in class_list[1:]:
             for i in range(2):
