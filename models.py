@@ -151,18 +151,18 @@ class YOLOLayer(nn.Module):
 
             x[..., 0:2] = (x[..., 0:2].sigmoid() + self.grid) * stride  # xy
             x[..., 2:4] = torch.exp(x[..., 2:4]) * self.anchor_grid # wh
-            x[..., 4:] = x[..., 4:].sigmoid() #
-            x = x.view(bs, -1, self.no)
+            x[..., 4:] = x[..., 4:].sigmoid()
+            x = x.view(bs, -1, self.no)  # score
         return x
 
     @staticmethod
     def _make_grid(nx=20, ny=20):
-        yv, xv = torch.meshgrid([torch.arange(ny), torch.arange(nx)], indexing='ij')
+        yv, xv = torch.meshgrid([torch.arange(ny), torch.arange(nx)])
         return torch.stack((xv, yv), 2).view((1, 1, ny, nx, 2)).float()
 
 
 class Darknet(nn.Module):
-    """YOLOv3 object detection model"""
+    """for YOLO-based object detection model"""
 
     def __init__(self, config_path):
         super(Darknet, self).__init__()
@@ -194,7 +194,6 @@ class Darknet(nn.Module):
 
     def load_darknet_weights(self, weights_path):
         """Parses and loads the weights stored in 'weights_path'"""
-
         # 바이너리 파일로 되어있는 weight file을 open
         with open(weights_path, "rb") as f:
             # First five are header values

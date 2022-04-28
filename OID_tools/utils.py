@@ -1,26 +1,17 @@
 import os
 '''데이터셋을 파싱하거나 다운로드 하는데 필요한 유틸 함수들 '''
 
-def make_train_txt(data_dir, domain_name):
-    path_ = os.path.join(data_dir, 'train', domain_name)
-    file_name = domain_name + '_train.txt'
-
+def make_img_list_txt(data_dir, domain_name, train):
+    if train:
+        path_ = os.path.join(data_dir, 'train', domain_name)
+        file_name = domain_name + '_train.txt'
+    else:
+        path_ = os.path.join(data_dir, 'validation', domain_name)
+        file_name = domain_name + '_valid.txt'
     img_list = os.listdir(path_)
     img_list.remove('Label')
     file_path_list = [os.path.join(path_, x) +'\n' for x in img_list if x != file_name]
 
-    f = open(os.path.join(path_, file_name), 'w')
-    f.writelines(file_path_list)
-    f.close()
-    return os.path.join(path_, file_name)
-
-
-def make_valid_txt(data_dir, domain_name):
-    path_ = os.path.join(data_dir, 'validation', domain_name)
-    img_list = os.listdir(path_)
-    img_list.remove('Label')
-    file_path_list = [os.path.join(path_, x) + '\n' for x in img_list]
-    file_name = domain_name + '_valid.txt'
     f = open(os.path.join(path_, file_name), 'w')
     f.writelines(file_path_list)
     f.close()
@@ -37,8 +28,8 @@ def make_data_file(root_dir, default_oid_dir, domain_dict):
     for domain_name, class_list in domain_dict.items():
         num_classes = class_list[0]
 
-        train_txt_path = make_train_txt(default_oid_dir, domain_name)
-        valid_txt_path = make_valid_txt(default_oid_dir, domain_name)
+        train_txt_path = make_img_list_txt(default_oid_dir, domain_name, True)
+        valid_txt_path = make_img_list_txt(default_oid_dir, domain_name, False)
 
         n_file_name = '%s.name' % domain_name
         names = os.path.join(default_oid_dir, 'domain_list', n_file_name)

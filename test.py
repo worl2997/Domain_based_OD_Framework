@@ -76,6 +76,7 @@ def print_eval_stats(metrics_output, class_names, verbose):
 
 
 def _evaluate(model, dataloader, class_names, img_size, iou_thres, conf_thres, nms_thres, verbose):
+
     """Evaluate model on validation dataset.
 
     :param model: Model to evaluate
@@ -112,7 +113,7 @@ def _evaluate(model, dataloader, class_names, img_size, iou_thres, conf_thres, n
         imgs = Variable(imgs.type(Tensor), requires_grad=False)
 
         with torch.no_grad():
-            outputs = model(imgs)
+            outputs = model(imgs)  # error raised
             outputs = non_max_suppression(outputs, conf_thres=conf_thres, iou_thres=nms_thres)
 
         sample_metrics += get_batch_statistics(outputs, targets, iou_threshold=iou_thres)
