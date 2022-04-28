@@ -132,7 +132,6 @@ class YOLOLayer(nn.Module):
         self.bce_loss = nn.BCELoss()
         self.no = num_classes + 5  # number of outputs per anchor
         self.grid = torch.zeros(1)
-
         anchors = torch.tensor(list(chain(*anchors))).float().view(-1, 2)
         self.register_buffer('anchors', anchors)
         self.register_buffer(
@@ -140,7 +139,6 @@ class YOLOLayer(nn.Module):
         self.stride = None
 
     def forward(self, x, img_size):
-        print(x.size(0))
         stride = img_size // x.size(2)
         self.stride = stride
         bs, _, ny, nx = x.shape  #ex => x(bs,255,20,20) to x(bs,3,20,20,85)
