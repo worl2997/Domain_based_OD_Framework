@@ -114,27 +114,35 @@ train.txt, valid.txt files contain the path of image datasets
 
 
 ## Dataset setting for Yolov3 training 
-if you want to use other dataset, not open-Image dataset, 
-you should follow below process (if not, you just follow above command in "Run main.py example")
+if you want to use other dataset, not open-Image dataset,   
+you should follow below process   
+(if not, you just follow above command in "Run main.py example")
 
 ### Classes
-Add class name file to `data/custom/domain_list/[classes.name]`. This file should have one row per class name. like as below  
+Add class name file to `data/custom/domain_list/[classes.name]`.   
+This file should have one row per class name. like as below  
 ![domain_list](readme/name_file.PNG)  
 
 ### Image Folder
-Move the images of your dataset to `data/custom/train/[model domain name]`, `data/custom/validation/[model domain name]`, like directory example picture that shown above. Also, you should make train.txt file and valid.txt file as below 
+Move the images of your dataset to  
+`data/custom/train/[model domain name]`, `data/custom/validation/[model domain name]`,   
+like directory example picture that shown above. Also, you should make train.txt file and valid.txt file as below 
 ![domain_list](readme/example.PNG)  
 ![domain_list](readme/example_directory.PNG)  
-but actually, you don't have to save the file in this directory. just write the train.txt, and valid.txt file path on "config/custom_data/[domain.data]" file   
+but actually, you don't have to save the file in this directory.  
+just write the train.txt, and valid.txt file path on "config/custom_data/[domain.data]" file   
 
 
 
 ### Annotation Folder
-Save your annotations to `data/custom/train/[your domain]/Labels/`, and `data/custom/validation/[your domain]/Labels/.  
+Save your annotations to `data/custom/train/[your domain]/Labels/`,   
+and `data/custom/validation/[your domain]/Labels/.  
 
-The dataloader expects that the annotation file corresponding to the image `data/custom/train/[your domain]/train.jpg` has the path `data/custom/train/[your_domain]/Labels/train.txt`.  
+The dataloader expects that the annotation file corresponding to the image   
+`data/custom/train/[your domain]/train.jpg` has the path `data/custom/train/[your_domain]/Labels/train.txt`.  
 
-If you want to train the data with yolov3 model, each row in the annotation file should define one bounding box, using the syntax `label_idx x_center y_center width height`. The coordinates should be scaled `[0, 1]`, and the `label_idx` should be zero-indexed and correspond to the row number of the class name in `data/custom/classes.names`.
+If you want to train the data with yolov3 model, each row in the annotation file should define one bounding box, using the syntax `label_idx x_center y_center width height`.  
+The coordinates should be scaled `[0, 1]`, and the `label_idx` should be zero-indexed and correspond to the row number of the class name in `data/custom/classes.names`.
 
 ### Make data file 
 make data file at config/custom_data/ like as below  
