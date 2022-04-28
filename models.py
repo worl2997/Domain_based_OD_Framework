@@ -140,9 +140,10 @@ class YOLOLayer(nn.Module):
         self.stride = None
 
     def forward(self, x, img_size):
+        print(x.size(0))
         stride = img_size // x.size(2)
         self.stride = stride
-        bs, _, ny, nx = x.shape  # x(bs,255,20,20) to x(bs,3,20,20,85)
+        bs, _, ny, nx = x.shape  #ex => x(bs,255,20,20) to x(bs,3,20,20,85)
         x = x.view(bs, self.num_anchors, self.no, ny, nx).permute(0, 1, 3, 4, 2).contiguous()
 
         if not self.training:  # inference
@@ -295,6 +296,7 @@ def load_model(model_path, weights_path=None):
     :return: Returns model
     :rtype: Darknet
     """
+    print("cfg file : ", model_path)
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")  # Select device for inference
     model = Darknet(model_path).to(device)
     model.apply(weights_init_normal)

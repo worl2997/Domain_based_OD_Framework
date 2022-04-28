@@ -1,6 +1,7 @@
 import os
 '''데이터셋을 파싱하거나 다운로드 하는데 필요한 유틸 함수들 '''
 
+
 def make_img_list_txt(data_dir, domain_name, train):
     if train:
         path_ = os.path.join(data_dir, 'train', domain_name)

@@ -105,15 +105,17 @@ def _evaluate(model, dataloader, class_names, img_size, iou_thres, conf_thres, n
     sample_metrics = []  # List of tuples (TP, confs, pred)
     for _, imgs, targets in tqdm.tqdm(dataloader, desc="Validating"):
         # Extract labels
-        labels += targets[:, 1].tolist()
+        # targets ex -> tensor([[0.0000, 0.0000, 0.4561, 0.5896, 0.3348, 0.3804]])
+        labels += targets[:, 1].tolist() # 라벨 목록
         # Rescale target
+        # GT 라벨을 모델이 예측한 값과 비교를 위해 rescale
         targets[:, 2:] = xywh2xyxy(targets[:, 2:])
         targets[:, 2:] *= img_size
 
         imgs = Variable(imgs.type(Tensor), requires_grad=False)
 
         with torch.no_grad():
-            outputs = model(imgs)  # error raised
+            outputs = model(imgs)  #
             outputs = non_max_suppression(outputs, conf_thres=conf_thres, iou_thres=nms_thres)
 
         sample_metrics += get_batch_statistics(outputs, targets, iou_threshold=iou_thres)

@@ -14,7 +14,7 @@ def parse_arguments():
     parser.add_argument("--domain", type=str, default=None, help="domain name for train")
     parser.add_argument("--custom", type=bool, default=True, help="custom train or not")
     parser.add_argument("--classes", type=int, default=80, help="Number of classes for training")
-    parser.add_argument("-cfg", "--cfg", type=str, default="config/yolov3.cfg", help="Path to model definition file (.cfg)")
+    parser.add_argument("-cfg", "--cfg", type=str, default=None, help="Path to model definition file (.cfg)")
     parser.add_argument("-d", "--data", type=str, default="config/coco.data", help="Path to data config file (.data)")
     parser.add_argument("-e", "--epochs", type=int, default=300, help="Number of epochs")
     parser.add_argument("-v", "--verbose", action='store_true', help="Makes the training more verbose")
