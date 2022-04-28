@@ -12,7 +12,6 @@ from utils.augmentations import AUGMENTATION_TRANSFORMS
 
 ImageFile.LOAD_TRUNCATED_IMAGES = True
 
-
 def pad_to_square(img, pad_value):
     c, h, w = img.shape
     dim_diff = np.abs(h - w)
@@ -37,7 +36,7 @@ def parse_label_data(img_list):
         file_name = b[-1].replace('.jpg', '.txt').replace(".png", ".txt")
         new = b[:-1]
         new.append('Label')
-        new.append(file_name)
+        new.append(file_name[:-1])
         label_path = '/'.join(new)
         label.append(label_path)
     return label
@@ -75,12 +74,11 @@ class ListDataset(Dataset):
             with open(file_path, "r") as file:
                 self.img_files = file.readlines()  # 이미지 파일의 path들을 읽어들임
             self.label_files = parse_label_data(self.img_files)
-
         else:
             with open(file_path, "r") as file:
                 self.img_files = file.readlines()  # 이미지 파일의 path들을 읽어드림
             self.label_files = [
-                path.replace("images", "labels").replace(".png", ".txt").replace(".jpg", ".txt")
+                path.replace("images", "Labels").replace(".png", ".txt").replace(".jpg", ".txt")
                 for path in self.img_files
             ]
 
@@ -98,9 +96,7 @@ class ListDataset(Dataset):
         #  Image
         # ---------
         try:
-
             img_path = self.img_files[index % len(self.img_files)].rstrip()
-
             img = np.array(Image.open(img_path).convert('RGB'), dtype=np.uint8)
         except Exception as e:
             pass
@@ -111,8 +107,8 @@ class ListDataset(Dataset):
         #  Label
         # ---------
         try:
+            print('len of data list :', len(self.label_files))
             label_path = self.label_files[index % len(self.img_files)].rstrip()
-
             # Ignore warning if file is empty
             with warnings.catch_warnings():
                 warnings.simplefilter("ignore")
@@ -124,12 +120,14 @@ class ListDataset(Dataset):
         # -----------
         #  Transform
         # -----------
+
         if self.transform:
             try:
                 img, bb_targets = self.transform((img, boxes))
             except:
                 print(f"Could not apply transform.")
                 return
+
         return img_path, img, bb_targets
 
     def collate_fn(self, batch):
@@ -137,7 +135,6 @@ class ListDataset(Dataset):
 
         # Drop invalid images
         batch = [data for data in batch if data is not None]
-
         paths, imgs, bb_targets = list(zip(*batch))
 
         # Selects new image size every tenth batch

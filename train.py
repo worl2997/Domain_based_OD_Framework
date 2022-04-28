@@ -17,7 +17,7 @@ from utils.datasets import ListDataset
 from utils.augmentations import AUGMENTATION_TRANSFORMS
 from utils.loss import compute_loss
 from test import _evaluate, _create_validation_data_loader
-
+from utils.parse_config import parse_data_config
 from terminaltables import AsciiTable
 
 from torchsummary import summary
@@ -73,7 +73,8 @@ def train(args, model_cfg, path):
 
     # Get data configuration
 
-    data_config = os.path.join(path.DATA_FILE_DIR, args.domain +'.data')  # args.data
+    data_files = os.path.join(path.DATA_FILE_DIR, args.domain +'.data')  # args.data
+    data_config = parse_data_config(data_files)
     train_path = data_config["train"]
     valid_path = data_config["valid"]
     class_names = load_classes(data_config["names"])

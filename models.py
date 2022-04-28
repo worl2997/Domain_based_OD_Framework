@@ -153,7 +153,6 @@ class YOLOLayer(nn.Module):
             x[..., 2:4] = torch.exp(x[..., 2:4]) * self.anchor_grid # wh
             x[..., 4:] = x[..., 4:].sigmoid() #
             x = x.view(bs, -1, self.no)
-        print("shape of x!! : {}",x.shape)
         return x
 
     @staticmethod
