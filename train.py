@@ -57,6 +57,7 @@ def _create_data_loader(custom, img_path, batch_size, img_size, n_cpu, multiscal
     return dataloader
 
 
+
 def train(args, model_cfg, path):
     print_environment_info()
     save_path = os.path.join(path.model_save_path, args.domain)
