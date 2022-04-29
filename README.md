@@ -67,10 +67,10 @@ After run downloader mode, then you just run below command for your custom train
 
 
 
-    ''' if you train the model supported by the framework (ex: yolov3, yolov3-tiny, lw-yolo) '''
+    ''' if you train the model supported by the framework (ex: yolov3, yolov3-tiny, lw-yolo) '''  
     $  python main.py train --model yolov3 --domain Highway --classes 2 --epochs 200 --pretrained_weight weights/darknet53.conv74 --verbose 
   
-    ''' if you want train model that framework does not support, then specify your model cfg file path'''
+    ''' if you want train model that framework does not support, then specify your model cfg file path'''  
     $  python main.py --model <name of your model for save-file naming> train --cfg <cfg path> --domain Highway --classes 2 --epochs 200
 
 
