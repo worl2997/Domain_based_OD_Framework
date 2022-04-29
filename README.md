@@ -64,6 +64,7 @@ After run downloader mode, then you just run below command for your custom train
 - --model -> select which model do you want to custom training 
 - --domain -> set the domain name for training, it used for get datasets of that domain 
 - --classes -> number of classes for training
+- --vervose -> for check the mAP at evalutation step 
 
 
 
