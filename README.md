@@ -9,7 +9,7 @@ The purpose of this project is to implement a framework that automatically downl
 
 ## Work in progress..
 - COCO dataset API will be updated 
-- Yolov4 module will be updated 
+- Yolov4 model will be supported soon 
 - pytorch -> onnx -> tensorRT based model transformation module will be updated 
 
 ### Environment 
@@ -24,15 +24,24 @@ GPU : NVidia rtx 2080 ti (8GB)
     2. cd CCAI
     3. sudo pip install -r requirements.txt
 ### Download pre-trained weights  (if you want train with yolov3 pre-trained weight)
+Now we support 3 yolo-based model 
+- yolov3
+- yolov3-tiny 
+- lw_yolo (our proposed light weight yolo -> https://www.mdpi.com/1099-4300/24/1/77)  
+**Pretrained weight of the proposed model is not supported yet.**
+- You can get pretrained backbone weights of yolov3, yolov3-tiny model (**darknet53.conv74**, **yolov3-tiny.conv.15**)
+
+  
     $ cd weights/
     $ bash download_weights.sh
 ### Set the domains.txt file 
 Each line of domains.txt means one domain.  
-First term in each line is domain name, and other are class name.  
-You can find downloadable class names in domain_list.csv.  
+First term in each line is domain name (Highway, Park etc), and other are class name.  
+You can find downloadable class names in domain_list.csv
    
 For example, if you set domains.txt as below,  
-then you can get Highway, Park domain models,
+then you can download [Car, Bus] class data in Highway directory, 
+Park domain models,
 trained with [Car, Bus], [Person, Tree, Dog] data  
 
 you can find trainable class list at https://learnopencv.com/fast-image-downloader-for-open-images-v4/
