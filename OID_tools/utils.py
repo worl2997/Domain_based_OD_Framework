@@ -86,7 +86,15 @@ def get_custom_cfg(path, domain, model_type, class_num):
             os.system("bash %s %d %s %s" % (custom_path, int(class_num),model_type, domain ))
             os.system("mv %s %s" % (cfg_name, path))
             return os.path.join(path, cfg_name)
-
+    elif model_type == "lw_yolo":
+        custom_path = os.path.join(path, 'create_custom_lw_yolo.sh')
+        cfg_name = domain + '_lw_yolo_' + str(class_num) + '.cfg'
+        if cfg_name in os.listdir(path):
+            return os.path.join(path, cfg_name)
+        else:
+            os.system("bash %s %d %s %s" % (custom_path, int(class_num), model_type, domain))
+            os.system("mv %s %s" % (cfg_name, path))
+            return os.path.join(path, cfg_name)
 
 #
 def images_options(df_val, args):
