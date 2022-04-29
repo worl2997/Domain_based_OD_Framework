@@ -1,4 +1,4 @@
-# CCAI_Pytorch 
+# Domain_based_OD_Framework 
 This repository is for domain-specific object detection training framework based on Open Image dataset,
 
 ** This project Use OIDv4 toolkit. if you want to know more about it, refer to https://github.com/EscVM/OIDv4_ToolKit
@@ -11,6 +11,8 @@ The purpose of this project is to implement a framework that automatically downl
 - COCO dataset API will be updated 
 - Yolov4 model will be supported soon 
 - pytorch -> onnx -> tensorRT based model transformation module will be updated 
+- A more detailed description of the framework will be explained at project documentation  
+**The document will be released soon.**
 
 ### Environment 
 Ubuntu 18.04  
@@ -41,14 +43,51 @@ You can find downloadable class names in domain_list.csv
    
 For example, if you set domains.txt as below,  
 then you can download [Car, Bus] class data in Highway directory, 
-Park domain models,
-trained with [Car, Bus], [Person, Tree, Dog] data  
+[Person, Tree, Dog] class data in Park directory
 
-you can find trainable class list at https://learnopencv.com/fast-image-downloader-for-open-images-v4/
+you can find available class list at https://learnopencv.com/fast-image-downloader-for-open-images-v4/
 
 ![domain_list](./readme/domains.PNG)
 
-##  Parser setting and run 
+## Run the code 
+you can select 2 mode - download, train 
+
+### [ Run main.py  example ]   
+#### For download domain data 
+- --limit -> Data to download per class
+
+
+    $  python main.py downloader --dm_list domains.txt --limit 10  
+  
+
+#### For train custom model  
+After run downloader mode, then you just run below command for your custom training   
+- --model -> select which model do you want to custom training 
+- --domain -> set the domain name for training, it used for get datasets of that domain 
+- --classes -> number of classes for training
+- --vervose -> for check the mAP at evalutation step 
+
+    ''' if you train the model supported by the framework (ex: yolov3, yolov3-tiny, lw-yolo) '''  
+
+    $  python main.py train --model yolov3 --domain Highway --classes 2 --epochs 200 --pretrained_weight weights/darknet53.conv74 --verbose 
+
+  
+    ''' if you want train model that framework does not support, then specify your model cfg file path'''  
+    $  python main.py train --model <name of your model for save-file naming> train --cfg <cfg path> --domain Highway --classes 2 --epochs 200
+
+
+
+### [ Run test.py example ]
+If you want to evaluate your model, then run the command like below example,  
+before run the test.py, **you should change batch size value at model cfg file**  
+![domain_list](readme/change_cfg.png) 
+
+
+    $  python test.py --model config/custom_cfg/Highway_yolov3_2.cfg --data config/custom_data/Highway.data --batch_size 1 --verbose --weights weights/custom_weight/Highway/Highway_yolov3_20.pth  
+
+
+
+##  Parser setting  
 There are several parsers that need to be configured for downloading data, and model training  
 you can find out more about parser at **parser.py**
 
@@ -58,45 +97,11 @@ download - only download dataset
 train - only train model   
 all - download the dataset, then train domain model  
 
---n_threads : set number of thread for downloading dataset  
-
+--n_threads : set number of thread for downloading dataset
 --classes : set the path of domains.txt file
 
 ![domain_list](./readme/parer_for_download.PNG)
 
-#### [ For training ]  
---cfg :  if you already have cfg file for train, set it (else, you don't need to set it)   
---model : model name for trainig (ex: yolov3 ,yolov3-tiny)  
---domain : set domain for train  (ex: Highway, Park)  
-![domain_list](readme/parser_for_training.PNG)
-
-#### [ Run main.py  example ]  
-##### For download domain data 
-    $  python main.py downloader --dm_list domains.txt --limit 10 
-##### For trian domain model  
-    # if you train the model supported by the framework (ex: yolov3, yolov3-tiny)
-    $  python main.py train --model yolov3 --domain Highway --classes 2 --epochs 200 --pretrained_weight weights/yolov3.weights  
-  
-    # if else, specify your model cfg file path 
-    $  python main.py --model <name of your model for save_file naming> train --cfg <cfg path> --domain Highway --classes 2 --epochs 200
-
-    
-
-
-
-#### Tensorboard
-Track training progress in Tensorboard:
-* Initialize training
-* Run the command below
-* Go to http://localhost:6006/
-
-```
-$ tensorboard --logdir='logs' --port=6006
-```
-
-Storing the logs on a slow drive possibly leads to a significant training speed decrease.
-
-You can adjust the log directory using `--logdir <path>` when running `tensorboard` or the `train.py`.
 
 ## Flowchart
 ![domain_list](readme/flowchart.PNG)  
@@ -176,9 +181,7 @@ else, if you want to make other yolo based model, you should make custom cfg fil
 
 then run the train code as previously described 
 
-## Detection test with trained model
-before test, you should change the yolov3-custom.cfg file like below.  
-![domain_list](readme/change_cfg.png) 
+
 
 parser setting for detect test is as below: 
 ![domain_list](readme/detection_parser.PNG) 
