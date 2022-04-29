@@ -23,7 +23,7 @@ GPU : NVidia rtx 2080 ti (8GB)
 
 ### Clone and install requirements
     1. git clone "this repository" 
-    2. cd CCAI
+    2. cd Domain_based_OD_Framework
     3. sudo pip install -r requirements.txt
 ### Download pre-trained weights  (if you want train with yolov3 pre-trained weight)
 Now we support 3 yolo-based model 
