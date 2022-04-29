@@ -51,6 +51,7 @@ you can find available class list at https://learnopencv.com/fast-image-download
 
 ## Run the code 
 you can select 2 mode - download, train 
+
 ### [ Run main.py  example ]   
 #### For download domain data 
 - --limit -> Data to download per class
@@ -83,6 +84,7 @@ before run the test.py, **you should change batch size value at model cfg file**
 
 
     $  python test.py --model config/custom_cfg/Highway_yolov3_2.cfg --data config/custom_data/Highway.data --batch_size 1 --verbose --weights weights/custom_weight/Highway/Highway_yolov3_20.pth  
+
 
 
 ##  Parser setting  
