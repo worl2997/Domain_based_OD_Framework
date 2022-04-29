@@ -18,6 +18,7 @@ from utils.datasets import ListDataset
 from utils.transforms import DEFAULT_TRANSFORMS
 from utils.parse_config import parse_data_config
 
+custom = True
 
 def evaluate_model_file(model_path, weights_path, img_path, class_names, batch_size=8, img_size=416,
                         n_cpu=8, iou_thres=0.5, conf_thres=0.5, nms_thres=0.5, verbose=True):
@@ -47,7 +48,7 @@ def evaluate_model_file(model_path, weights_path, img_path, class_names, batch_s
     :return: Returns precision, recall, AP, f1, ap_class
     """
     dataloader = _create_validation_data_loader(
-        img_path, batch_size, img_size, n_cpu)
+        custom, img_path, batch_size, img_size, n_cpu)
     model = load_model(model_path, weights_path)
     metrics_output = _evaluate(
         model,
