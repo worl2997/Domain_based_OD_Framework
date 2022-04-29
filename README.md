@@ -72,7 +72,7 @@ After run downloader mode, then you just run below command for your custom train
 
   
     ''' if you want train model that framework does not support, then specify your model cfg file path'''  
-    $  python main.py --model <name of your model for save-file naming> train --cfg <cfg path> --domain Highway --classes 2 --epochs 200
+    $  python main.py train --model <name of your model for save-file naming> train --cfg <cfg path> --domain Highway --classes 2 --epochs 200
 
 
 
