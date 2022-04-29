@@ -1,4 +1,4 @@
-# CCAI_Pytorch 
+# Domain_based_OD_Framework 
 This repository is for domain-specific object detection training framework based on Open Image dataset,
 
 ** This project Use OIDv4 toolkit. if you want to know more about it, refer to https://github.com/EscVM/OIDv4_ToolKit
