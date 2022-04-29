@@ -9,8 +9,10 @@ The purpose of this project is to implement a framework that automatically downl
 
 ## Work in progress..
 - COCO dataset API will be updated 
-- Yolov4 module will be updated 
+- Yolov4 model will be supported soon 
 - pytorch -> onnx -> tensorRT based model transformation module will be updated 
+- A more detailed description of the framework will be explained at project documentation  
+**The document will be released soon.**
 
 ### Environment 
 Ubuntu 18.04  
@@ -24,22 +26,63 @@ GPU : NVidia rtx 2080 ti (8GB)
     2. cd CCAI
     3. sudo pip install -r requirements.txt
 ### Download pre-trained weights  (if you want train with yolov3 pre-trained weight)
+Now we support 3 yolo-based model 
+- yolov3
+- yolov3-tiny 
+- lw_yolo (our proposed light weight yolo -> https://www.mdpi.com/1099-4300/24/1/77)  
+**Pretrained weight of the proposed model is not supported yet.**
+- You can get pretrained backbone weights of yolov3, yolov3-tiny model (**darknet53.conv74**, **yolov3-tiny.conv.15**)
+
+  
     $ cd weights/
     $ bash download_weights.sh
 ### Set the domains.txt file 
 Each line of domains.txt means one domain.  
-First term in each line is domain name, and other are class name.  
-You can find downloadable class names in domain_list.csv.  
+First term in each line is domain name (Highway, Park etc), and other are class name.  
+You can find downloadable class names in domain_list.csv
    
 For example, if you set domains.txt as below,  
-then you can get Highway, Park domain models,
-trained with [Car, Bus], [Person, Tree, Dog] data  
+then you can download [Car, Bus] class data in Highway directory, 
+[Person, Tree, Dog] class data in Park directory
 
-you can find trainable class list at https://learnopencv.com/fast-image-downloader-for-open-images-v4/
+you can find available class list at https://learnopencv.com/fast-image-downloader-for-open-images-v4/
 
 ![domain_list](./readme/domains.PNG)
 
-##  Parser setting and run 
+## Run the code 
+you can select 2 mode - download, train 
+### [ Run main.py  example ]   
+#### For download domain data 
+- --limit -> Data to download per class
+
+
+    $  python main.py downloader --dm_list domains.txt --limit 10  
+  
+
+#### For train custom model  
+After run downloader mode, then you just run below command for your custom training   
+- --model -> select which model do you want to custom training 
+- --domain -> set the domain name for training, it used for get datasets of that domain 
+- --classes -> number of classes for training
+
+
+    ''' if you train the model supported by the framework (ex: yolov3, yolov3-tiny, lw-yolo) '''
+    $  python main.py train --model yolov3 --domain Highway --classes 2 --epochs 200 --pretrained_weight weights/darknet53.conv74 --verbose 
+  
+    ''' if you want train model that framework does not support, then specify your model cfg file path'''
+    $  python main.py --model <name of your model for save-file naming> train --cfg <cfg path> --domain Highway --classes 2 --epochs 200
+
+
+### [ Run test.py example ]
+If you want to evaluate your model, then run the command like below example,  
+before run the test.py, **you should change batch size value at model cfg file**  
+![domain_list](readme/change_cfg.png) 
+
+
+    $  python test.py --model config/custom_cfg/Highway_yolov3_2.cfg --data config/custom_data/Highway.data --batch_size 1 --verbose --weights weights/custom_weight/Highway/Highway_yolov3_20.pth  
+
+
+##  Parser setting  
 There are several parsers that need to be configured for downloading data, and model training  
 you can find out more about parser at **parser.py**
 
@@ -49,45 +92,11 @@ download - only download dataset
 train - only train model   
 all - download the dataset, then train domain model  
 
---n_threads : set number of thread for downloading dataset  
-
+--n_threads : set number of thread for downloading dataset
 --classes : set the path of domains.txt file
 
 ![domain_list](./readme/parer_for_download.PNG)
 
-#### [ For training ]  
---cfg :  if you already have cfg file for train, set it (else, you don't need to set it)   
---model : model name for trainig (ex: yolov3 ,yolov3-tiny)  
---domain : set domain for train  (ex: Highway, Park)  
-![domain_list](readme/parser_for_training.PNG)
-
-#### [ Run main.py  example ]  
-##### For download domain data 
-    $  python main.py downloader --dm_list domains.txt --limit 10 
-##### For trian domain model  
-    # if you train the model supported by the framework (ex: yolov3, yolov3-tiny)
-    $  python main.py train --model yolov3 --domain Highway --classes 2 --epochs 200 --pretrained_weight weights/yolov3.weights  
-  
-    # if else, specify your model cfg file path 
-    $  python main.py --model <name of your model for save_file naming> train --cfg <cfg path> --domain Highway --classes 2 --epochs 200
-
-    
-
-
-
-#### Tensorboard
-Track training progress in Tensorboard:
-* Initialize training
-* Run the command below
-* Go to http://localhost:6006/
-
-```
-$ tensorboard --logdir='logs' --port=6006
-```
-
-Storing the logs on a slow drive possibly leads to a significant training speed decrease.
-
-You can adjust the log directory using `--logdir <path>` when running `tensorboard` or the `train.py`.
 
 ## Flowchart
 ![domain_list](readme/flowchart.PNG)  
@@ -114,27 +123,35 @@ train.txt, valid.txt files contain the path of image datasets
 
 
 ## Dataset setting for Yolov3 training 
-if you want to use other dataset, not open-Image dataset, 
-you should follow below process (if not, you just follow above command in "Run main.py example")
+if you want to use other dataset, not open-Image dataset,   
+you should follow below process   
+(if not, you just follow above command in "Run main.py example")
 
 ### Classes
-Add class name file to `data/custom/domain_list/[classes.name]`. This file should have one row per class name. like as below  
+Add class name file to `data/custom/domain_list/[classes.name]`.   
+This file should have one row per class name. like as below  
 ![domain_list](readme/name_file.PNG)  
 
 ### Image Folder
-Move the images of your dataset to `data/custom/train/[model domain name]`, `data/custom/validation/[model domain name]`, like directory example picture that shown above. Also, you should make train.txt file and valid.txt file as below 
+Move the images of your dataset to  
+`data/custom/train/[model domain name]`, `data/custom/validation/[model domain name]`,   
+like directory example picture that shown above. Also, you should make train.txt file and valid.txt file as below 
 ![domain_list](readme/example.PNG)  
 ![domain_list](readme/example_directory.PNG)  
-but actually, you don't have to save the file in this directory. just write the train.txt, and valid.txt file path on "config/custom_data/[domain.data]" file   
+but actually, you don't have to save the file in this directory.  
+just write the train.txt, and valid.txt file path on "config/custom_data/[domain.data]" file   
 
 
 
 ### Annotation Folder
-Save your annotations to `data/custom/train/[your domain]/Labels/`, and `data/custom/validation/[your domain]/Labels/.  
+Save your annotations to `data/custom/train/[your domain]/Labels/`,   
+and `data/custom/validation/[your domain]/Labels/.  
 
-The dataloader expects that the annotation file corresponding to the image `data/custom/train/[your domain]/train.jpg` has the path `data/custom/train/[your_domain]/Labels/train.txt`.  
+The dataloader expects that the annotation file corresponding to the image   
+`data/custom/train/[your domain]/train.jpg` has the path `data/custom/train/[your_domain]/Labels/train.txt`.  
 
-If you want to train the data with yolov3 model, each row in the annotation file should define one bounding box, using the syntax `label_idx x_center y_center width height`. The coordinates should be scaled `[0, 1]`, and the `label_idx` should be zero-indexed and correspond to the row number of the class name in `data/custom/classes.names`.
+If you want to train the data with yolov3 model, each row in the annotation file should define one bounding box, using the syntax `label_idx x_center y_center width height`.  
+The coordinates should be scaled `[0, 1]`, and the `label_idx` should be zero-indexed and correspond to the row number of the class name in `data/custom/classes.names`.
 
 ### Make data file 
 make data file at config/custom_data/ like as below  
@@ -159,9 +176,7 @@ else, if you want to make other yolo based model, you should make custom cfg fil
 
 then run the train code as previously described 
 
-## Detection test with trained model
-before test, you should change the yolov3-custom.cfg file like below.  
-![domain_list](readme/change_cfg.png) 
+
 
 parser setting for detect test is as below: 
 ![domain_list](readme/detection_parser.PNG) 
