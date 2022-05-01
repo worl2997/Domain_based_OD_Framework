@@ -12,7 +12,7 @@ The purpose of this project is to implement a framework that automatically downl
 - Yolov4 model will be supported soon 
 - pytorch -> onnx -> tensorRT based model transformation module will be updated 
 - A more detailed description of the framework will be explained at project documentation  
-**The document will be released soon.**
+**The documentation will be released soon.**
 
 ### Environment 
 Ubuntu 18.04  
@@ -39,8 +39,7 @@ Now we support 3 yolo-based model
 ### Set the domains.txt file 
 Each line of domains.txt means one domain.  
 First term in each line is domain name (Highway, Park etc), and other are class name.  
-You can find downloadable class names in domain_list.csv
-   
+
 For example, if you set domains.txt as below,  
 then you can download [Car, Bus] class data in Highway directory, 
 [Person, Tree, Dog] class data in Park directory
