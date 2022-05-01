@@ -56,7 +56,7 @@ you can select 2 mode - download, train
 - --limit -> Data to download per class
 
 
-    $  python main.py downloader --dm_list domains.txt --limit 10  
+    $  python main.py downloader --dm_list domains.txt --limit 10 --yes
   
 
 #### For train custom model  
