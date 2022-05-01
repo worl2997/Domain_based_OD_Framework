@@ -308,13 +308,14 @@ def non_max_suppression(prediction, conf_thres=0.25, iou_thres=0.45, classes=Non
     output from yolo model :
             yolo model outputs:
              torch.Size([1, 507, 7])
-             torch.Size([1, 2028, 7])
+             torch.Size([1, 2028, 7])do_inference
              torch.Size([1, 8112, 7])
          cat output: torch.Size([1, 10647, 7])
 
     Returns:
          detections with shape: nx6 (x1, y1, x2, y2, conf, cls)
     """
+    print("prediction shape! :", prediction.shape)
     nc = prediction.shape[2] - 5  # number of classes
 
     # Settings
