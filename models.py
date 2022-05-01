@@ -198,7 +198,7 @@ class Darknet(nn.Module):
             cat output: torch.Size([1, 10647, 7])
             
             '''
-        return yolo_outputs if not self.training else torch.cat(yolo_outputs, 1)
+        return yolo_outputs if self.training else torch.cat(yolo_outputs, 1)
 
 
     def load_darknet_weights(self, weights_path):
