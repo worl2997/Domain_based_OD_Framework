@@ -44,7 +44,7 @@ For example, if you set domains.txt as below,
 then you can download [Car, Bus] class data in Highway directory, 
 [Person, Tree, Dog] class data in Park directory
 
-you can find available class list at https://learnopencv.com/fast-image-downloader-for-open-images-v4/
+you can find available class list at https://learnopencv.com/fast-image-downloader-for-open-images-v4/ or class_list.csv in project folder 
 
 ![domain_list](./readme/domains.PNG)
 
