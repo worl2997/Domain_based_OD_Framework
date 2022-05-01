@@ -305,10 +305,16 @@ def box_iou(box1, box2):
 
 def non_max_suppression(prediction, conf_thres=0.25, iou_thres=0.45, classes=None):
     """Performs Non-Maximum Suppression (NMS) on inference results
+    output from yolo model :
+            yolo model outputs:
+             torch.Size([1, 507, 7])
+             torch.Size([1, 2028, 7])
+             torch.Size([1, 8112, 7])
+         cat output: torch.Size([1, 10647, 7])
+
     Returns:
          detections with shape: nx6 (x1, y1, x2, y2, conf, cls)
     """
-
     nc = prediction.shape[2] - 5  # number of classes
 
     # Settings
@@ -320,12 +326,12 @@ def non_max_suppression(prediction, conf_thres=0.25, iou_thres=0.45, classes=Non
     multi_label = nc > 1  # multiple labels per box (adds 0.5ms/img)
 
     t = time.time()
-    output = [torch.zeros((0, 6), device="cpu")] * prediction.shape[0]
+    output = [torch.zeros((0, 6), device="cpu")] * prediction.shape[0]  # (0,6) size tensor x (batch size)
 
     for xi, x in enumerate(prediction):  # image index, image inference
         # Apply constraints
         # x[((x[..., 2:4] < min_wh) | (x[..., 2:4] > max_wh)).any(1), 4] = 0  # width-height
-        x = x[x[..., 4] > conf_thres]  # confidence
+        x = x[x[..., 4] > conf_thres]  # object confidence
 
         # If none remain process next image
         if not x.shape[0]:

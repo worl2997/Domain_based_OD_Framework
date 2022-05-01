@@ -118,7 +118,7 @@ def _evaluate(model, dataloader, class_names, img_size, iou_thres, conf_thres, n
         with torch.no_grad():
             outputs = model(imgs)  #
             outputs = non_max_suppression(outputs, conf_thres=conf_thres, iou_thres=nms_thres)
-
+            print(outputs)
         sample_metrics += get_batch_statistics(outputs, targets, iou_threshold=iou_thres)
 
     if len(sample_metrics) == 0:  # No detections over whole validation set.

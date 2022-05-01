@@ -214,6 +214,7 @@ def train(args, model_cfg, path):
             print(f"---- Saving checkpoint to: '{save_path}' ----")
             if not os.path.isdir(save_path):
                 os.makedirs(save_path)
+
             torch.save(model.state_dict(), os.path.join(save_path, pth_file_name + f"_%d.pth" % epoch)
 )
 
