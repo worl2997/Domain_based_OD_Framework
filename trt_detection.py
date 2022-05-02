@@ -89,7 +89,6 @@ def main():
 
     trt_yolo = Trt_yolo(args.model, len(cls_list), img_size)
     loop_and_detect(cam, trt_yolo, args.conf_thresh, args.nms_thresh, cls_list)
-
     cam.release()
     cv2.destroyAllWindows()
 

@@ -8,13 +8,13 @@ import cv2
 import tensorrt as trt
 import pycuda.driver as cuda
 from utils.utils import load_classes, rescale_boxes, non_max_suppression, print_environment_info
+import torch
 from detection_tools.utils import post_processing
 import pycuda.autoinit
 
 # Simple helper data class that's a little nicer to use than a 2-tuple.
 def GiB(val):
     return val * 1 << 30
-
 
 class HostDeviceMem(object):
     def __init__(self, host_mem, device_mem):
@@ -109,8 +109,9 @@ class Trt_yolo(object):
         self.inputs[0].host = img_in # 네트워크 입력에 맞게 resize된 입력
 
         trt_outputs = do_inference(self.context, bindings=self.bindings, inputs=self.inputs, outputs=self.outputs, stream=self.stream)
-
-        boxes = non_max_suppression(trt_outputs, conf_thresh, nms_thresh)
+        outputs = torch.from_numpy(trt_outputs[0])
+        outputs = outputs.view(1,-1,  self.num_classes + 5)
+        boxes = non_max_suppression(outputs, conf_thresh, nms_thresh)
         # nms를 거친 boxes, scores, classes를 반환해야함
         return boxes
 

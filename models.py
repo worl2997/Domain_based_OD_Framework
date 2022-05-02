@@ -307,4 +307,5 @@ def load_model(model_path, weights_path=None):
         else:
             # Load darknet weights
             model.load_darknet_weights(weights_path)
+
     return model

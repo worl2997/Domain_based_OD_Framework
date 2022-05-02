@@ -30,8 +30,11 @@ def transform_to_onnx(pre_weights,model_cfg, batch_size, IN_IMAGE_H, IN_IMAGE_W)
 
     input_names = ["input"]
     output_names = ["outputs"]
+    dynamic = False  # for support dynamic batch, not supported yet
 
-    dynamic = False
+    model.eval()
+
+
     if batch_size <= 0:
         dynamic = True
 
