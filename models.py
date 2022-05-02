@@ -143,17 +143,15 @@ class YOLOLayer(nn.Module):
         self.stride = stride
         bs, _, ny, nx = x.shape  #ex => x(bs,255,20,20) to x(bs,3,20,20,85)
         x = x.view(bs, self.num_anchors, self.no, ny, nx).permute(0, 1, 3, 4, 2).contiguous()
-        # premutate -> (batch, num_anchors, output per anchor-> [class_num + class_conf + box], h_size, w_size)
 
-        if self.training:  # inference
+        if not self.training:  # inference
             if self.grid.shape[2:4] != x.shape[2:4]:
                 self.grid = self._make_grid(nx, ny).to(x.device)
 
             x[..., 0:2] = (x[..., 0:2].sigmoid() + self.grid) * stride  # xy
             x[..., 2:4] = torch.exp(x[..., 2:4]) * self.anchor_grid # wh
             x[..., 4:] = x[..., 4:].sigmoid()
-            x = x.view(bs, -1, self.no)  # score of
-
+            x = x.view(bs, -1, self.no)  # score
         return x
 
     @staticmethod
@@ -191,15 +189,7 @@ class Darknet(nn.Module):
                 x = module[0](x, img_size)
                 yolo_outputs.append(x)
             layer_outputs.append(x)
-            '''
-            torch.Size([1, 507, 7])
-            torch.Size([1, 2028, 7])
-            torch.Size([1, 8112, 7])
-            cat output: torch.Size([1, 10647, 7])
-            
-            '''
         return yolo_outputs if self.training else torch.cat(yolo_outputs, 1)
-
 
     def load_darknet_weights(self, weights_path):
         """Parses and loads the weights stored in 'weights_path'"""

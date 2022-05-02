@@ -109,7 +109,7 @@ class Trt_yolo(object):
         self.inputs[0].host = img_in # 네트워크 입력에 맞게 resize된 입력
 
         trt_outputs = do_inference(self.context, bindings=self.bindings, inputs=self.inputs, outputs=self.outputs, stream=self.stream)
-        print(len(trt_outputs))
+
         boxes = non_max_suppression(trt_outputs, conf_thresh, nms_thresh)
         # nms를 거친 boxes, scores, classes를 반환해야함
         return boxes
