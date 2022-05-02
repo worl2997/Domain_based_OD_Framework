@@ -67,8 +67,8 @@ After run downloader mode, then you just run below command for your custom train
 - --classes -> number of classes for training
 - --vervose -> for check the mAP at evalutation step 
 
-    ''' if you train the model supported by the framework (ex: yolov3, yolov3-tiny, lw-yolo) '''  
 
+    ''' if you train the model supported by the framework (ex: yolov3, yolov3-tiny, lw-yolo) '''
     $  python main.py train --model yolov3 --domain Highway --classes 2 --epochs 200 --pretrained_weight weights/darknet53.conv74 --verbose 
 
   
