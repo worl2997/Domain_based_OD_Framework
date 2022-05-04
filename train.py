@@ -215,7 +215,7 @@ def train(args, model_cfg, path):
             if not os.path.isdir(save_path):
                 os.makedirs(save_path)
 
-            torch.save(model.state_dict(), os.path.join(save_path, pth_file_name + f"_%d.pth" % epoch)
+            torch.save(model.state_dict(), os.path.join(save_path, pth_file_name + f"_%d.pth" % (epoch +100))
 )
 
         # ########

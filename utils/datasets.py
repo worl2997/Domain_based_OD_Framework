@@ -49,9 +49,7 @@ class ImageFolder(Dataset):
     def __getitem__(self, index):
 
         img_path = self.files[index % len(self.files)]
-        img = np.array(
-            Image.open(img_path).convert('RGB'),
-            dtype=np.uint8)
+        img = np.array(Image.open(img_path).convert('RGB'), dtype=np.uint8)
 
         # Label Placeholder
         boxes = np.zeros((1, 5))
@@ -91,7 +89,6 @@ class ListDataset(Dataset):
         self.transform = transform
 
     def __getitem__(self, index):
-
         # ---------
         #  Image
         # ---------

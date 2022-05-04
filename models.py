@@ -145,6 +145,7 @@ class YOLOLayer(nn.Module):
         x = x.view(bs, self.num_anchors, self.no, ny, nx).permute(0, 1, 3, 4, 2).contiguous()
 
         if not self.training:  # inference
+
             if self.grid.shape[2:4] != x.shape[2:4]:
                 self.grid = self._make_grid(nx, ny).to(x.device)
 

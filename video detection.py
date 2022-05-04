@@ -87,7 +87,7 @@ if __name__ == "__main__":
         ret, img = cap.read()
         if ret is False:
             break
-        img = cv2.resize(img, (1280, 960), interpolation=cv2.INTER_CUBIC)
+        img = cv2.resize(img, (1280, 960), interpolation=cv2.INTER_CUBIC) # 이미지 resize
 
 
         RGBimg=changeBGR2RGB(img)
@@ -107,7 +107,7 @@ if __name__ == "__main__":
         if detections is not None:
             a.extend(detections)
         b=len(a)
-        if len(a)  :
+        if len(a):
             for detections in a:
                 if detections is not None:
                     detections = rescale_boxes(detections, opt.img_size, RGBimg.shape[:2])

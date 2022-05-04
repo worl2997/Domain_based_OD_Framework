@@ -112,7 +112,7 @@ class Trt_yolo(object):
         outputs = torch.from_numpy(trt_outputs[0])
         outputs = outputs.view(1,-1,  self.num_classes + 5)
         boxes = non_max_suppression(outputs, conf_thresh, nms_thresh)
-        # nms를 거친 boxes, scores, classes를 반환해야함
+        # nms를 거친 boxes, scores, classes를 반환 -> shape : (detected_instance_number , boxes, socres, classes)
         return boxes
 
     def get_engine(self):

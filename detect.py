@@ -26,7 +26,7 @@ from matplotlib.ticker import NullLocator
 
 
 def detect_directory(model_path, weights_path, img_path, classes, output_path,
-                     batch_size=8, img_size=416, n_cpu=8, conf_thres=0.5, nms_thres=0.5):
+                     batch_size=1, img_size=416, n_cpu=8, conf_thres=0.5, nms_thres=0.5):
     """Detects objects on all images in specified directory and saves output images with drawn detections.
 
     :param model_path: Path to model definition file (.cfg)
@@ -64,40 +64,6 @@ def detect_directory(model_path, weights_path, img_path, classes, output_path,
     print(f"---- Detections were saved to: '{output_path}' ----")
 
 
-def detect_image(model, image, img_size=416, conf_thres=0.5, nms_thres=0.5):
-    """Inferences one image with model.
-
-    :param model: Model for inference
-    :type model: models.Darknet
-    :param image: Image to inference
-    :type image: nd.array
-    :param img_size: Size of each image dimension for yolo, defaults to 416
-    :type img_size: int, optional
-    :param conf_thres: Object confidence threshold, defaults to 0.5
-    :type conf_thres: float, optional
-    :param nms_thres: IOU threshold for non-maximum suppression, defaults to 0.5
-    :type nms_thres: float, optional
-    :return: Detections on image with each detection in the format: [x1, y1, x2, y2, confidence, class]
-    :rtype: nd.array
-    """
-    model.eval()  # Set model to evaluation mode
-
-    # Configure input
-    input_img = transforms.Compose([
-        DEFAULT_TRANSFORMS,
-        Resize(img_size)])(
-            (image, np.zeros((1, 5))))[0].unsqueeze(0)
-
-    if torch.cuda.is_available():
-        input_img = input_img.to("cuda")
-
-    # Get detections
-    with torch.no_grad():
-        detections = model(input_img)
-        detections = non_max_suppression(detections, conf_thres, nms_thres)
-        detections = rescale_boxes(detections[0], img_size, image.shape[:2])
-    return detections.numpy()
-
 
 def detect(model, dataloader, output_path, conf_thres, nms_thres):
     """Inferences images with model.
@@ -129,17 +95,17 @@ def detect(model, dataloader, output_path, conf_thres, nms_thres):
 
     for (img_paths, input_imgs) in tqdm.tqdm(dataloader, desc="Detecting"):
         # Configure input
-        input_imgs = Variable(input_imgs.type(Tensor))
-
+        input_imgs = Variable(input_imgs.type(Tensor), requires_grad=False)
         # Get detections
         with torch.no_grad():
-
-            detections = model(input_imgs)
-            detections = non_max_suppression(detections, conf_thres, nms_thres)
+            outputs = model(input_imgs)
+            outputs = non_max_suppression(outputs, conf_thres=conf_thres, iou_thres=nms_thres)
+            # outputs -> boxes
 
         # Store image and detections
-        img_detections.extend(detections)
+        img_detections.extend(outputs)
         imgs.extend(img_paths)
+    print(len(img_detections))
     return img_detections, imgs
 
 
@@ -240,6 +206,7 @@ def _create_data_loader(img_path, batch_size, img_size, n_cpu):
     dataset = ImageFolder(
         img_path,
         transform=transforms.Compose([DEFAULT_TRANSFORMS, Resize(img_size)]))
+
     dataloader = DataLoader(
         dataset,
         batch_size=batch_size,
@@ -260,7 +227,7 @@ def run():
     parser.add_argument("-b", "--batch_size", type=int, default=1, help="Size of each image batch")
     parser.add_argument("--img_size", type=int, default=416, help="Size of each image dimension for yolo")
     parser.add_argument("--n_cpu", type=int, default=8, help="Number of cpu threads to use during batch generation")
-    parser.add_argument("--conf_thres", type=float, default=0.5, help="Object confidence threshold")
+    parser.add_argument("--conf_thres", type=float, default=0.1, help="Object confidence threshold")
     parser.add_argument("--nms_thres", type=float, default=0.4, help="IOU threshold for non-maximum suppression")
     args = parser.parse_args()
     print(f"Command line arguments: {args}")

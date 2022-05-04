@@ -3,7 +3,6 @@
 NUM_CLASSES=$1
 MODEL_NAME=$2
 DOMAIN_NAME=$3
-
 echo "
 [net]
 # Testing
@@ -26,7 +25,7 @@ learning_rate=0.001
 burn_in=1000
 max_batches = $(expr $NUM_CLASSES \* 4000)
 policy=steps
-steps=400000,450000
+steps= $(expr $NUM_CLASSES \* 1600) ,$(expr $NUM_CLASSES \* 1800)
 scales=.1,.1
 
 [convolutional]

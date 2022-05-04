@@ -8,6 +8,26 @@ import itertools
 import struct  # get_image_size
 import imghdr  # get_image_size
 
+def rescale_boxes(boxes, current_dim, original_shape):
+    """
+    Rescales bounding boxes to the original shape
+    """
+    orig_h, orig_w = original_shape
+
+    # The amount of padding that was added
+    pad_x = max(orig_h - orig_w, 0) * (current_dim / max(original_shape))
+    pad_y = max(orig_w - orig_h, 0) * (current_dim / max(original_shape))
+
+    # Image height and width after padding is removed
+    unpad_h = current_dim - pad_y
+    unpad_w = current_dim - pad_x
+    # Rescale bounding boxes to dimension of original image
+    boxes[:, 0] = ((boxes[:, 0] - pad_x // 2) / unpad_w) * orig_w
+    boxes[:, 1] = ((boxes[:, 1] - pad_y // 2) / unpad_h) * orig_h
+    boxes[:, 2] = ((boxes[:, 2] - pad_x // 2) / unpad_w) * orig_w
+    boxes[:, 3] = ((boxes[:, 3] - pad_y // 2) / unpad_h) * orig_h
+    return boxes
+
 def weights_init_normal(m):
     #초기 가중치 설정
     classname = m.__class__.__name__
@@ -117,35 +137,61 @@ def plot_boxes_cv2(img, boxes, class_names=None, color=None):
 
     width = img.shape[1]
     height = img.shape[0]
+
+    # boxes = list(boxes.numpy())
     for i in range(len(boxes)):
         box = boxes[i]
-        x1 = int(box[0] * width)
-        y1 = int(box[1] * height)
-        x2 = int(box[2] * width)
-        y2 = int(box[3] * height)
+        # x1 = int(box[0] * width)
+        # y1 = int(box[1] * height)
+        # x2 = int(box[2] * width)
+        # y2 = int(box[3] * height)
+        x1 = int(box[0])
+        y1 = int(box[1])
+        x2 = int(box[2])
+        y2 = int(box[3])
+
         bbox_thick = int(0.6 * (height + width) / 600)
         if color:
             rgb = color
         else:
             rgb = (255, 0, 0)
-        if len(box) >= 7 and class_names:
-            cls_conf = box[5]
-            cls_id = box[6] # 추론한 클래스
-            print('%s: %f' % (class_names[cls_id], cls_conf))
-            classes = len(class_names)
-            offset = cls_id * 123457 % classes
-            red = get_color(2, offset, classes)
-            green = get_color(1, offset, classes)
-            blue = get_color(0, offset, classes)
-            if color is None:
-                rgb = (red, green, blue)
-            msg = str(class_names[cls_id]) + " " + str(round(cls_conf, 3))
-            t_size = cv2.getTextSize(msg, 0, 0.7, thickness=bbox_thick // 2)[0]
-            c1, c2 = (x1, y1), (x2, y2)
-            c3 = (c1[0] + t_size[0], c1[1] - t_size[1] - 3)
-            cv2.rectangle(img, (x1, y1), (np.float32(c3[0]), np.float32(c3[1])), rgb, -1)
-            img = cv2.putText(img, msg, (c1[0], np.float32(c1[1] - 2)), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 0, 0),
-                              bbox_thick // 2, lineType=cv2.LINE_AA)
+
+        cls_conf = box[4]
+        cls_id = box[5] # 추론한 클래스
+        #print('%s: %f' % (class_names[cls_id], float(cls_conf)))
+        classes = len(class_names)
+        offset = int(cls_id) * 123457 % classes
+        red = get_color(2, offset, classes)
+        green = get_color(1, offset, classes)
+        blue = get_color(0, offset, classes)
+        if color is None:
+            rgb = (red, green, blue)
+        msg = str(class_names[int(cls_id)]) + " " + str(round(float(cls_conf), 3))
+        t_size = cv2.getTextSize(msg, 0, 0.7, thickness=bbox_thick // 2)[0]
+        c1, c2 = (x1, y1), (x2, y2)
+        c3 = (c1[0] + t_size[0], c1[1] - t_size[1] - 3)
+        cv2.rectangle(img, (x1, y1), (np.float32(c3[0]), np.float32(c3[1])), rgb, -1)
+        img = cv2.putText(img, msg, (c1[0], np.float32(c1[1] - 2)), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 0, 0),
+                         bbox_thick // 2, lineType=cv2.LINE_AA)
+
+        # if len(box) >= 7 and class_names:
+        #     cls_conf = box[5]
+        #     cls_id = box[6] # 추론한 클래스
+        #     print('%s: %f' % (class_names[cls_id], cls_conf))
+        #     classes = len(class_names)
+        #     offset = cls_id * 123457 % classes
+        #     red = get_color(2, offset, classes)
+        #     green = get_color(1, offset, classes)
+        #     blue = get_color(0, offset, classes)
+        #     if color is None:
+        #         rgb = (red, green, blue)
+        #     msg = str(class_names[cls_id]) + " " + str(round(cls_conf, 3))
+        #     t_size = cv2.getTextSize(msg, 0, 0.7, thickness=bbox_thick // 2)[0]
+        #     c1, c2 = (x1, y1), (x2, y2)
+        #     c3 = (c1[0] + t_size[0], c1[1] - t_size[1] - 3)
+        #     cv2.rectangle(img, (x1, y1), (np.float32(c3[0]), np.float32(c3[1])), rgb, -1)
+        #     img = cv2.putText(img, msg, (c1[0], np.float32(c1[1] - 2)), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 0, 0),
+        #                       bbox_thick // 2, lineType=cv2.LINE_AA)
 
         img = cv2.rectangle(img, (x1, y1), (x2, y2), rgb, bbox_thick)
     return img
