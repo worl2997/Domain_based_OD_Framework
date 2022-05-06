@@ -52,7 +52,6 @@ def transform_to_trt(pre_weights,model_cfg, batch_size, IN_IMAGE_SIZE, space_siz
     output_names = ["outputs"]
     dynamic = False  # for support dynamic batch, not supported yet
 
-    # model.eval()
 
 
     if batch_size <= 0:

@@ -25,6 +25,7 @@ def rescale_boxes(boxes, current_dim, original_shape):
     boxes[:, 1] = ((boxes[:, 1] - pad_y // 2) / unpad_h) * orig_h
     boxes[:, 2] = ((boxes[:, 2] - pad_x // 2) / unpad_w) * orig_w
     boxes[:, 3] = ((boxes[:, 3] - pad_y // 2) / unpad_h) * orig_h
+
     return boxes
 
 def weights_init_normal(m):
@@ -121,9 +122,9 @@ def nms_cpu(boxes, confs, nms_thresh=0.5, min_mode=False):
     return np.array(keep)
 
 
-def plot_boxes_cv2(img, boxes, class_names=None, color=None):
+def plot_boxes_cv2(origin_img, net_img_size,  boxes, class_names=None, color=None):
     import cv2
-    img = np.copy(img)
+    img = np.copy(origin_img)
     colors = np.array([[1, 0, 1], [0, 0, 1], [0, 1, 1], [0, 1, 0], [1, 1, 0], [1, 0, 0]], dtype=np.float32)
     # img -> original image size
 
@@ -135,22 +136,19 @@ def plot_boxes_cv2(img, boxes, class_names=None, color=None):
         r = (1 - ratio) * colors[i][c] + ratio * colors[j][c]
         return int(r * 255)
 
+    # box rescale
     width = img.shape[1]
     height = img.shape[0]
+
+
 
     # boxes = list(boxes.numpy())
     for i in range(len(boxes)):
         box = boxes[i]
-        # x1 = int(box[0] * width)
-        # y1 = int(box[1] * height)
-        # x2 = int(box[2] * width)
-        # y2 = int(box[3] * height)
-        x1 = int(box[0])
-        y1 = int(box[1])
-        x2 = int(box[2])
-        y2 = int(box[3])
-
-
+        x1 = box[0]
+        y1 = box[1]
+        x2 = box[2]
+        y2 = box[3]
         bbox_thick = int(0.6 * (height + width) / 600)
         if color:
             rgb = color
