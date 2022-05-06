@@ -7,6 +7,8 @@ import torch.nn as nn
 import itertools
 import struct  # get_image_size
 import imghdr  # get_image_size
+import matplotlib.pyplot as plt
+import random
 
 def rescale_boxes(boxes, current_dim, original_shape):
     """
@@ -122,24 +124,15 @@ def nms_cpu(boxes, confs, nms_thresh=0.5, min_mode=False):
     return np.array(keep)
 
 
-def plot_boxes_cv2(origin_img, net_img_size,  boxes, class_names=None, color=None):
+def plot_boxes_cv2(origin_img,  boxes, class_names=None, color=None):
     import cv2
     img = np.copy(origin_img)
-    colors = np.array([[1, 0, 1], [0, 0, 1], [0, 1, 1], [0, 1, 0], [1, 1, 0], [1, 0, 0]], dtype=np.float32)
+    classes = len(class_names)
+    colors = np.random.randint(0, 255, size=(classes, 3), dtype="uint8")
     # img -> original image size
 
-    def get_color(c, x, max_val):
-        ratio = float(x) / max_val * 5
-        i = int(math.floor(ratio))
-        j = int(math.ceil(ratio))
-        ratio = ratio - i
-        r = (1 - ratio) * colors[i][c] + ratio * colors[j][c]
-        return int(r * 255)
-
-    # box rescale
-    width = img.shape[1]
-    height = img.shape[0]
-
+    unique_labels = boxes[:, -1].cpu().unique() #  label of each detection
+    n_cls_preds = len(unique_labels)
 
 
     # boxes = list(boxes.numpy())
@@ -149,31 +142,16 @@ def plot_boxes_cv2(origin_img, net_img_size,  boxes, class_names=None, color=Non
         y1 = box[1]
         x2 = box[2]
         y2 = box[3]
-        bbox_thick = int(0.6 * (height + width) / 600)
-        if color:
-            rgb = color
-        else:
-            rgb = (255, 0, 0)
-
         cls_conf = box[4]
-        cls_id = box[5] # 추론한 클래스
-        #print('%s: %f' % (class_names[cls_id], float(cls_conf)))
-        classes = len(class_names)
-        offset = int(cls_id) * 123457 % classes
-        red = get_color(2, offset, classes)
-        green = get_color(1, offset, classes)
-        blue = get_color(0, offset, classes)
-        if color is None:
-            rgb = (red, green, blue)
-        msg = str(class_names[int(cls_id)]) + " " + str(round(float(cls_conf), 3))
-        t_size = cv2.getTextSize(msg, 0, 0.7, thickness=bbox_thick // 2)[0]
-        c1, c2 = (x1, y1), (x2, y2)
-        c3 = (c1[0] + t_size[0], c1[1] - t_size[1] - 3)
-        cv2.rectangle(img, (x1, y1), (np.float32(c3[0]), np.float32(c3[1])), rgb, -1)
-        img = cv2.putText(img, msg, (c1[0], np.float32(c1[1] - 2)), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 0, 0),
-                         bbox_thick // 2, lineType=cv2.LINE_AA)
+        cls_id = box[5]
 
-        img = cv2.rectangle(img, (x1, y1), (x2, y2), rgb, bbox_thick)
+        box_w = x2 - x1
+        box_h = y2 -y1
+        color = [int(c) for c in colors[int(cls_id)]]
+        img = cv2.rectangle(img, (x1, y1 + box_h), (x2, y1), color, 2)
+        cv2.putText(img, class_names[int(cls_id)], (x1, y1), cv2.FONT_HERSHEY_SIMPLEX, 0.5, color, 2)
+        cv2.putText(img, str("%.2f" % float(cls_conf)), (x2, y2 - box_h), cv2.FONT_HERSHEY_SIMPLEX, 0.5, color, 2)
+
     return img
 
 
