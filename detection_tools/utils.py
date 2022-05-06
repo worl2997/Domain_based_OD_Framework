@@ -13,7 +13,6 @@ def rescale_boxes(boxes, current_dim, original_shape):
     Rescales bounding boxes to the original shape
     """
     orig_h, orig_w = original_shape
-
     # The amount of padding that was added
     pad_x = max(orig_h - orig_w, 0) * (current_dim / max(original_shape))
     pad_y = max(orig_w - orig_h, 0) * (current_dim / max(original_shape))
@@ -126,6 +125,7 @@ def plot_boxes_cv2(img, boxes, class_names=None, color=None):
     import cv2
     img = np.copy(img)
     colors = np.array([[1, 0, 1], [0, 0, 1], [0, 1, 1], [0, 1, 0], [1, 1, 0], [1, 0, 0]], dtype=np.float32)
+    # img -> original image size
 
     def get_color(c, x, max_val):
         ratio = float(x) / max_val * 5
@@ -150,6 +150,7 @@ def plot_boxes_cv2(img, boxes, class_names=None, color=None):
         x2 = int(box[2])
         y2 = int(box[3])
 
+
         bbox_thick = int(0.6 * (height + width) / 600)
         if color:
             rgb = color
@@ -173,25 +174,6 @@ def plot_boxes_cv2(img, boxes, class_names=None, color=None):
         cv2.rectangle(img, (x1, y1), (np.float32(c3[0]), np.float32(c3[1])), rgb, -1)
         img = cv2.putText(img, msg, (c1[0], np.float32(c1[1] - 2)), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 0, 0),
                          bbox_thick // 2, lineType=cv2.LINE_AA)
-
-        # if len(box) >= 7 and class_names:
-        #     cls_conf = box[5]
-        #     cls_id = box[6] # 추론한 클래스
-        #     print('%s: %f' % (class_names[cls_id], cls_conf))
-        #     classes = len(class_names)
-        #     offset = cls_id * 123457 % classes
-        #     red = get_color(2, offset, classes)
-        #     green = get_color(1, offset, classes)
-        #     blue = get_color(0, offset, classes)
-        #     if color is None:
-        #         rgb = (red, green, blue)
-        #     msg = str(class_names[cls_id]) + " " + str(round(cls_conf, 3))
-        #     t_size = cv2.getTextSize(msg, 0, 0.7, thickness=bbox_thick // 2)[0]
-        #     c1, c2 = (x1, y1), (x2, y2)
-        #     c3 = (c1[0] + t_size[0], c1[1] - t_size[1] - 3)
-        #     cv2.rectangle(img, (x1, y1), (np.float32(c3[0]), np.float32(c3[1])), rgb, -1)
-        #     img = cv2.putText(img, msg, (c1[0], np.float32(c1[1] - 2)), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 0, 0),
-        #                       bbox_thick // 2, lineType=cv2.LINE_AA)
 
         img = cv2.rectangle(img, (x1, y1), (x2, y2), rgb, bbox_thick)
     return img

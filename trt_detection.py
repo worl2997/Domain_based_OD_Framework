@@ -24,10 +24,10 @@ def parse_args():
         help='path of class name file')
 
     parser.add_argument(
-        '-t', '--conf_thresh', type=float, default=0.1,
+        '-t', '--conf_thresh', type=float, default=0.7,
         help='set the detection confidence threshold')
     parser.add_argument(
-        '-n', '--nms_thresh', type=float, default=0.6,
+        '-n', '--nms_thresh', type=float, default=0.7,
         help='set the detection confidence threshold')
     parser.add_argument(
         '-m', '--model', type=str, required=True,
@@ -53,6 +53,7 @@ def loop_and_detect(cam, trt_yolo, conf_th, nms_th, class_list):
 
         boxes = trt_yolo.detect(img,conf_th, nms_th) # trt engine 기반 추론
         rescale_boxes(boxes[0], 416, img.shape[:2]) # 5/2 추가된 코드
+
         #img = vis.draw_bboxes(img, boxes, confs,cls)
         img = plot_boxes_cv2(img, boxes[0], class_names=class_list)
         img = show_fps(img, fps) # fps 표시
