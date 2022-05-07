@@ -57,7 +57,7 @@ def bounding_boxes_images(args,path):
 
         for class_name in class_list[1:]:
             for i in range(2):
-                name_file = csv_file_list[i]
+                name_file = csv_file_list[i].split('/')[-1]
                 df_val = pd.read_csv(csv_file_list[i])
                 data_type = name_file[:5]  # train or valid
 
