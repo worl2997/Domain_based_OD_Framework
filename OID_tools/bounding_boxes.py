@@ -35,8 +35,8 @@ def bounding_boxes_images(args,path):
     print("name_file_path:", name_file_path)
     print("domain_list:", domain_list)
     domain_dict = make_domain_list(name_file_path, domain_list)
-    error_csv(name_file_class, csv_dir, args.yes)
     mkdirs(dataset_dir, csv_dir, domain_dict)
+    error_csv(name_file_class, csv_dir, args.yes)
 
     csv_file_list = []
     for i in range(2):
