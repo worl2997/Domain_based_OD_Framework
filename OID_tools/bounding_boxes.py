@@ -43,6 +43,7 @@ def bounding_boxes_images(args,path):
        name_file = file_list[i]
        csv_file = TTV(csv_dir, name_file, args.yes)
        csv_file_list.append(csv_file)
+
     # create class list file for each domain in data/custom/domain_list directory
 
     for domain_name, class_list in domain_dict.items():
@@ -56,6 +57,7 @@ def bounding_boxes_images(args,path):
 
         for class_name in class_list[1:]:
             for i in range(2):
+                name_file = csv_file_list[i]
                 df_val = pd.read_csv(csv_file_list[i])
                 data_type = name_file[:5]  # train or valid
 
