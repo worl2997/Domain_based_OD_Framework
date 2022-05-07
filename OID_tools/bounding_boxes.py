@@ -34,14 +34,19 @@ def bounding_boxes_images(args,path):
 
     print("name_file_path:", name_file_path)
     print("domain_list:", domain_list)
-
     domain_dict = make_domain_list(name_file_path, domain_list)
-    # create class list file for each domain in data/custom/domain_list directory
+    error_csv(name_file_class, csv_dir, args.yes)
     mkdirs(dataset_dir, csv_dir, domain_dict)
+
+    csv_file_list = []
+    for i in range(2):
+       name_file = file_list[i]
+       csv_file = TTV(csv_dir, name_file, args.yes)
+       csv_file_list.append(csv_file)
+    # create class list file for each domain in data/custom/domain_list directory
 
     for domain_name, class_list in domain_dict.items():
         print(bcolors.INFO + 'Downloading {} together.'.format(str(class_list[1:])) + bcolors.ENDC)
-        error_csv(name_file_class, csv_dir, args.yes)
         df_classes = pd.read_csv(classes_csv_path, header=None)
         class_dict = {}
         # class_dict => : {'Orange': '/m/0cyhj_', 'Apple': '/m/014j1m'}
@@ -51,8 +56,7 @@ def bounding_boxes_images(args,path):
 
         for class_name in class_list[1:]:
             for i in range(2):
-                name_file = file_list[i]
-                df_val = TTV(csv_dir, name_file, args.yes)
+                df_val = pd.read_csv(csv_file_list[i])
                 data_type = name_file[:5]  # train or valid
 
                 if not args.n_threads:
