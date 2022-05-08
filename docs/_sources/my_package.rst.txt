@@ -1,0 +1,16 @@
+my_package
+======================================
+
+.. automodule:: my_package
+:members:
+:undoc-members:
+:show-inheritance:
+
+## title Name
+
+Title Name
+-------------
+## my_package 폴더에  my_module 사용  automodule 로 .py 를 html 로 쉽게 변경.
+
+.. automodule:: my_package.my_module
+    :members:
