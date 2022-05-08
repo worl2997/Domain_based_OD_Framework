@@ -23,7 +23,7 @@ exposure = 1.5
 hue=.1
 
 learning_rate=0.001
-burn_in=1000
+burn_in=400
 max_batches = $(expr $NUM_CLASSES \* 4000)
 policy=steps
 steps= $(expr $NUM_CLASSES \* 1600) ,$(expr $NUM_CLASSES \* 1800)
