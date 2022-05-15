@@ -10,7 +10,7 @@ def parse_arguments():
     # settings for training
     ####################################
     parser.add_argument("--model", type=str, default=None,
-                       help="which model you want to make cfg file ex: yolov3, yolov3-tiny")
+                       help="which model you want to make cfg file ex: yolov3, yolov3_tiny, lw_yolo")
     parser.add_argument("--domain", type=str, default=None, help="domain name for train")
     parser.add_argument("--custom", type=bool, default=True, help="custom train or not")
     parser.add_argument("--classes", type=int, default=80, help="Number of classes for training")
