@@ -48,7 +48,7 @@ then you can download [Car, Bus] class data in Highway directory,
 
 you can find available class list at https://learnopencv.com/fast-image-downloader-for-open-images-v4/
 
-![domain_list](./readme/domains.PNG)
+![domain_list](../readme/domains.PNG)
 
 ## Run the code 
 you can select 2 mode - download, train 
@@ -81,7 +81,7 @@ After run downloader mode, then you just run below command for your custom train
 ### [ Run test.py example ]
 If you want to evaluate your model, then run the command like below example,  
 before run the test.py, **you should change batch size value at model cfg file**  
-![domain_list](readme/change_cfg.png) 
+![domain_list](../readme/change_cfg.png) 
 
 
     $  python test.py --model config/custom_cfg/Highway_yolov3_2.cfg --data config/custom_data/Highway.data --batch_size 1 --verbose --weights weights/custom_weight/Highway/Highway_yolov3_20.pth  
@@ -101,11 +101,11 @@ all - download the dataset, then train domain model
 --n_threads : set number of thread for downloading dataset
 --classes : set the path of domains.txt file
 
-![domain_list](./readme/parer_for_download.PNG)
+![domain_list](../readme/parer_for_download.PNG)
 
 
 ## Flowchart
-![domain_list](readme/flowchart.PNG)  
+![domain_list](../readme/flowchart.PNG)  
 
 ① - 'bounding_boxes' class is data downloading class, it calls downloader.py  
 
@@ -115,7 +115,7 @@ all - download the dataset, then train domain model
 
 ④ - 'Make_domain_list' method  make name file, which contains class name  
 ##### After ②③④, we can get the directory list as below  
-![domain_list](readme/data_example.png)  
+![domain_list](../readme/data_example.png)  
 and train.txt, valid.txt, highway.name files are made.  
 train.txt, valid.txt files contain the path of image datasets  
 
