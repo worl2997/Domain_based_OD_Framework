@@ -20,20 +20,20 @@ Jetson board와 같은 임베디드 보드에서 동작하기 위한 TensorRT �
 
 ## 데이터 수집 모듈
 
-[OID_tools Package ](Documentation/OID_tools Package.md)
+[OID_tools Package ](Documentation/OID_tools_package.md)
 
-[COCO_tools Package](Documentation/COCO_tools Package.md)
+[COCO_tools Package](Documentation/COCO_tools_package.md)
 
 ## 모델 학습 및 테스트 관련 모듈
 
 [weights](Documentation/weights.md)
 
-[utils package ](Documentation/utils package.md)
+[utils package ](Documentation/utils_package.md)
 
-[Config directory ](Documentation/Config directory.md)
+[Config directory ](Documentation/Config_directory.md)
 
 ## Jetson board 동작을 위한 Detection Package
 
-[Detection_tools package ](Documentation/Detection_tools package.md)
+[Detection_tools package ](Documentation/Detection_tools_package.md)
 
 [trt_detection.py](Documentation/trt_detection.md)
