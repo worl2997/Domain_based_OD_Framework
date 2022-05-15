@@ -136,14 +136,14 @@ you should follow below process
 ### Classes
 Add class name file to `data/custom/domain_list/[classes.name]`.   
 This file should have one row per class name. like as below  
-![domain_list](readme/name_file.PNG)  
+![domain_list](../readme/name_file.PNG)  
 
 ### Image Folder
 Move the images of your dataset to  
 `data/custom/train/[model domain name]`, `data/custom/validation/[model domain name]`,   
 like directory example picture that shown above. Also, you should make train.txt file and valid.txt file as below 
-![domain_list](readme/example.PNG)  
-![domain_list](readme/example_directory.PNG)  
+![domain_list](../readme/example.PNG)  
+![domain_list](../readme/example_directory.PNG)  
 but actually, you don't have to save the file in this directory.  
 just write the train.txt, and valid.txt file path on "config/custom_data/[domain.data]" file   
 
@@ -161,7 +161,7 @@ The coordinates should be scaled `[0, 1]`, and the `label_idx` should be zero-in
 
 ### Make data file 
 make data file at config/custom_data/ like as below  
-![domain_list](readme/datafile.png)  
+![domain_list](../readme/datafile.png)  
 classes : number of domain's class number   
 train : path of train.txt file   
 valid : path of valid.txt file   
@@ -185,7 +185,7 @@ then run the train code as previously described
 
 
 parser setting for detect test is as below: 
-![domain_list](readme/detection_parser.PNG) 
+![domain_list](../readme/detection_parser.PNG) 
 --image_folder : put the directory path where your test data files stored  
 --model_def : cfg_file   
 --weights_path : put the trained model with your custom data ex: weights/custom_weight/Highway.pth  
@@ -195,4 +195,4 @@ parser setting for detect test is as below:
 
     $ python detect.py --image_folder data/sample --model_def config/custom_cfg/yolov3-custom.cfg --weights_path weights/custom_weight/Highway.pth --class_path data/custom/domain_list/Highway.name
 then, you can get the result in "output" directory (it made when detect.py run)
-![domain_list](readme/result.png) 
+![domain_list](../readme/result.png) 
