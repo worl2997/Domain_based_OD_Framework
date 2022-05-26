@@ -70,7 +70,7 @@ def parse_custom_data(custom_path, group_name):
 def get_custom_cfg(path, domain, model_type, class_num):
     if model_type == "yolov3_tiny":
         custom_path = os.path.join(path, 'create_custom_yolov3_tiny.sh')
-        cfg_name = domain +'_yolov3-tiny_' + str(class_num) + '.cfg'
+        cfg_name = domain +'_yolov3_tiny_' + str(class_num) + '.cfg'
         if cfg_name in os.listdir(path):
             return os.path.join(path, cfg_name)
         else:
